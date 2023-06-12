@@ -55,3 +55,12 @@ module.exports = {
     await queryInterface.dropTable('Spots');
   }
 };
+
+
+//Seeder file generations below
+// npx sequelize seed:generate --name <Name of seed>
+// npx sequelize seed:generate --name Spot-Image &&
+// npx sequelize seed:generate --name Spot &&
+// npx sequelize seed:generate --name Review-Image &&
+// npx sequelize seed:generate --name Review &&
+// npx sequelize seed:generate --name Booking
