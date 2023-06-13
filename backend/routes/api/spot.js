@@ -62,15 +62,19 @@ router.get('/:spotId', async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
       include: [{model:SpotImage,
       attributes: ['url']},
-      {model:Review}]
+      {model:Review},
+      {model:User, as: 'Owner',
+      attributes:['id', 'firstName', 'lastName']}]
   });
-  let spotObj = spot.toJSON();
-console.log('where is my spot', spotObj);
+    let spotObj = spot.toJSON();
+    let totalStars = 0;
+    for(let review of spotObj.Reviews) {
+      totalStars += review.stars
+    }
+    spotObj.avgRating = totalStars / spotObj.Reviews.length
+    delete spotObj.Reviews;
 
-//loop through reviews, find avgrating - set average rating
-//delete reviews
-
-res.json(spot);
+res.json(spotObj);
 });
 
 
