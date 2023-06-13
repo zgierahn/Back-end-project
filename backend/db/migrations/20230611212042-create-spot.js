@@ -56,16 +56,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Spot";
+    options.tableName = "Spots";
     await queryInterface.dropTable(options);
   }
 };
-
-
-//Seeder file generations below
-// npx sequelize seed:generate --name <Name of seed>
-// npx sequelize seed:generate --name Spot-Image &&
-// npx sequelize seed:generate --name Spot &&
-// npx sequelize seed:generate --name Review-Image &&
-// npx sequelize seed:generate --name Review &&
-// npx sequelize seed:generate --name Booking

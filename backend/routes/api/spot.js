@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage } = require('../../db/models');
+const { Spot, SpotImage, Review } = require('../../db/models');
 const router = express.Router();
 const { Op } = require('sequelize');
 
@@ -9,40 +9,53 @@ const { Op } = require('sequelize');
 router.get('/', async (req, res) => {
     let allSpots = await Spot.findAll(
       {include: {model:SpotImage,
-        // where: {preview : true},
-        attributes: [['url', 'previewImage']]
-      }
-
+        // where:{preview:true}, //no filtering
+        attributes: ['url']}
     });
-    let images = await SpotImage.findAll({
-      where: {preview: true}
+    // let images = await SpotImage.findAll({
+    //   where: {preview: true}
+    // });
+
+    let newarray = [];
+    allSpots.forEach(spot => {
+      let spotObj = spot.toJSON();
+      let {url} = spotObj.SpotImages[0] ? spotObj.SpotImages[0] : {url:'no image'};
+      delete spotObj.SpotImages;
+      spotObj.previewImage = url;
+      newarray.push(spotObj)
     });
 
-    console.log('whats in the array', allSpots[0].dataValues.SpotImages);
-// console.log('allspots', allSpots);
-//     allSpots.forEach(spot => {
-//       let {url} = spot.SpotImages[0] ? spot.SpotImages[0] : {url:'no image'}
-//     });
-// console.log('what have we done', allSpots);
-    res.json(allSpots);
+    res.json({Spots:newarray});
 
 });
 
-
 // router.get('/', async(req,res)=>{
+//   let answer=[]
 //   let spot = await Spot.findAll({
-//       include:
-//     {model:SpotImage,
-//       where:{preview:true},
-
+//       include:[
+//       {model:SpotImage,
+//         where:{preview:true},  //can't use where clause
 //         attributes: ['url'],
-//       //   through: { attributes: [] },
-//       // required: true,
-
 //         }
-//   })
-//   res.json(spot)
-// })
+//       ]
+//   });
+//  let reviews = await Review.findAll();
+
+
+//   const spots=spot.map((spot)=> {
+//     let {url} = spot.SpotImages[0]? spot.SpotImages[0]:{url:null};
+//     console.log('url', url);  //url does not show up
+//     let place =spot.toJSON()
+//     console.log('spot', place);
+//   delete place.SpotImages
+//   place.previewImage = url
+//   answer.push(place)
+// } )
+//   res.json({Spots:answer}) //
+
+// });
+
+
 
 
 // router.use((req, res, next) => {
