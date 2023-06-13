@@ -8,19 +8,21 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res) => {
     let allSpots = await Spot.findAll(
-      {include: {model:SpotImage,
-        // where:{preview:true}, //no filtering
-        attributes: ['url']}
+      {include: [{model:SpotImage,
+        attributes: ['url']},
+        {model:Review}]
     });
-    // let images = await SpotImage.findAll({
-    //   where: {preview: true}
-    // });
-
     let newarray = [];
     allSpots.forEach(spot => {
       let spotObj = spot.toJSON();
       let {url} = spotObj.SpotImages[0] ? spotObj.SpotImages[0] : {url:'no image'};
+      let totalStars = 0
+      for(let review of spotObj.Reviews) {
+        totalStars += review.stars
+      }
+      spotObj.avgRating = totalStars / spotObj.Reviews.length
       delete spotObj.SpotImages;
+      delete spotObj.Reviews;
       spotObj.previewImage = url;
       newarray.push(spotObj)
     });
@@ -29,31 +31,17 @@ router.get('/', async (req, res) => {
 
 });
 
-// router.get('/', async(req,res)=>{
-//   let answer=[]
-//   let spot = await Spot.findAll({
-//       include:[
-//       {model:SpotImage,
-//         where:{preview:true},  //can't use where clause
-//         attributes: ['url'],
-//         }
-//       ]
-//   });
-//  let reviews = await Review.findAll();
+router.get('/current', async (req, res) => {
+  console.log('user id', req.User.id);
+  // User {
+  //   dataValues:
+  // console.log('req body', req);
 
 
-//   const spots=spot.map((spot)=> {
-//     let {url} = spot.SpotImages[0]? spot.SpotImages[0]:{url:null};
-//     console.log('url', url);  //url does not show up
-//     let place =spot.toJSON()
-//     console.log('spot', place);
-//   delete place.SpotImages
-//   place.previewImage = url
-//   answer.push(place)
-// } )
-//   res.json({Spots:answer}) //
+res.json('Success!');
 
-// });
+});
+
 
 
 

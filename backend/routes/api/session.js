@@ -22,17 +22,15 @@ const validateLogin = [
 
 // Log in
 router.post('/', validateLogin, async (req, res, next) => {
-      const { credential, password } = req.body;
-
-      const user = await User.findOne({
-        attributes:['id', 'firstName', 'lastName', 'email', 'userName'],
-        where: {
-          [Op.or]: {
-            username: credential,
-            email: credential
-          }
+    const { credential, password } = req.body;
+    const user = await User.unscoped().findOne({
+      where: {
+        [Op.or]: {
+          username: credential,
+          email: credential
         }
-      });
+      }
+    });
 
       if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error('Login failed');
