@@ -56,6 +56,10 @@ router.get('/current', async (req, res) => {
 });
 
 
+router.get('/:spotId', async (req, res) => {
+
+});
+
 
 
 
