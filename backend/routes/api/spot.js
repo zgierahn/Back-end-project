@@ -1,9 +1,7 @@
 const express = require('express');
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 const { Op } = require('sequelize');
-
-
 
 
 router.get('/', async (req, res) => {
@@ -16,7 +14,7 @@ router.get('/', async (req, res) => {
     allSpots.forEach(spot => {
       let spotObj = spot.toJSON();
       let {url} = spotObj.SpotImages[0] ? spotObj.SpotImages[0] : {url:'no image'};
-      let totalStars = 0
+      let totalStars = 0;
       for(let review of spotObj.Reviews) {
         totalStars += review.stars
       }
@@ -32,13 +30,28 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/current', async (req, res) => {
-  console.log('user id', req.User.id);
-  // User {
-  //   dataValues:
-  // console.log('req body', req);
+  let allSpots = await Spot.findAll({
+      where: {ownerId: req.user.dataValues.id },
+      include: [{model:SpotImage,
+        attributes: ['url']},
+        {model:Review}]
+  });
+  let newarray = [];
+  allSpots.forEach(spot => {
+    let spotObj = spot.toJSON();
+    let {url} = spotObj.SpotImages[0] ? spotObj.SpotImages[0] : {url:'no image'};
+    let totalStars = 0;
+    for(let review of spotObj.Reviews) {
+      totalStars += review.stars
+    }
+    spotObj.avgRating = totalStars / spotObj.Reviews.length
+    delete spotObj.SpotImages;
+    delete spotObj.Reviews;
+    spotObj.previewImage = url;
+    newarray.push(spotObj)
+  });
 
-
-res.json('Success!');
+  res.json({Spots:newarray});
 
 });
 
