@@ -108,10 +108,24 @@ res.json(spotObj);
 });
 
 
-router.post('/:spotId/images', async (req, res) => {
+router.post('/:spotId/images', requireAuth, async (req, res) => {
+  const {url, preview} = req.body;
+  const spot = await Spot.findByPk(req.params.spotId);
+  if(spot.ownerId !== req.user.dataValues.id || !spot) {
+      res.statusCode = 404;
+      return res.json({"message": "Spot couldn't be found"})
+  }
+  const newImage = await SpotImage.create({
+        spotId: spot.id,
+        url: 'fresh new image',
+        preview: true
+  })
 
-
-  res.json('Success!');
+  res.json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview
+  });
 });
 
 
