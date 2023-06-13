@@ -26,8 +26,8 @@ router.get('/', async (req, res) => {
     });
 
     res.json({Spots:newarray});
-
 });
+
 
 router.get('/current', async (req, res) => {
   let allSpots = await Spot.findAll({
@@ -52,12 +52,25 @@ router.get('/current', async (req, res) => {
   });
 
   res.json({Spots:newarray});
-
 });
 
 
 router.get('/:spotId', async (req, res) => {
+  if(!req.params.spotId) {
+    //set up error handling
+  }
+  let spot = await Spot.findByPk(req.params.spotId, {
+      include: [{model:SpotImage,
+      attributes: ['url']},
+      {model:Review}]
+  });
+  let spotObj = spot.toJSON();
+console.log('where is my spot', spotObj);
 
+//loop through reviews, find avgrating - set average rating
+//delete reviews
+
+res.json(spot);
 });
 
 
