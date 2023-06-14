@@ -193,13 +193,47 @@ router.get('/:spotId/reviews', async (req, res) => {
         attributes:['id', 'url']}]
       }]
     });
-    
+
   if(!reviews) {
       res.status(404);
       res.json({"message": "Spot couldn't be found"});
   }
       res.json(reviews);
 });
+
+
+//Create a Review based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
+  const { review, stars } = req.body;
+  let spot = await Spot.findByPk(req.params.spotId);
+  if(!spot) {
+    res.status(404).json({"message": "Spot couldn't be found"})
+  }
+
+  let sessionUser = req.user.dataValues.id;
+  let error = {};
+
+  let newReview = await Review.build({
+    userId: sessionUser ? sessionUser : error.sessionUser = 'Session user is required',
+    spotId: spot.id,
+    review: review ? review : error.review = "Review text is required",
+    stars: stars > 0 && stars < 6 ? stars : error.stars = "Stars must be an integer from 1 to 5"
+});
+
+if(Object.keys(error).length) {
+  const err = new Error('Bad Resquest');
+  err.error = error;
+  err.statusCode = 400;
+  return next(err);
+}
+
+await newReview.save();
+res.json(newReview)
+});
+
+
+
+
 
 // router.use((req, res, next) => {
 //     const err = new Error('sorry brah nothing to see here');

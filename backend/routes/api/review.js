@@ -4,7 +4,7 @@ const router = express.Router();
 const { Op, Error } = require('sequelize');
 const {requireAuth} = require('../../utils/auth.js');
 
-//get current user reviews
+//Get all Reviews of Current User
 router.get('/current',  requireAuth, async (req, res) => {
     let reviews = await Review.findAll({
         where:{ userId:  req.user.dataValues.id},
@@ -34,6 +34,8 @@ router.get('/current',  requireAuth, async (req, res) => {
 
       res.json({Reviews:answer});
 });
+
+
 
 
 
