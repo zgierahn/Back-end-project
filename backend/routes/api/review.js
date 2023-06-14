@@ -7,7 +7,7 @@ const {requireAuth} = require('../../utils/auth.js');
 //get current user reviews
 router.get('/current',  requireAuth, async (req, res) => {
     let reviews = await Review.findAll({
-        where:{ userId:  req.user.dataValues.id}, 
+        where:{ userId:  req.user.dataValues.id},
         include: [{model:User,
             attributes: ['id', 'firstName', 'lastName']},
                 {model:Spot,
@@ -34,6 +34,8 @@ router.get('/current',  requireAuth, async (req, res) => {
 
       res.json({Reviews:answer});
 });
+
+
 
 
 

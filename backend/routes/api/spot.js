@@ -4,6 +4,7 @@ const router = express.Router();
 const { Op, Error } = require('sequelize');
 const {requireAuth} = require('../../utils/auth.js');
 
+
 //GET all spots
 router.get('/', async (req, res) => {
     let allSpots = await Spot.findAll(
@@ -28,6 +29,7 @@ router.get('/', async (req, res) => {
 
     res.json({Spots:newarray});
 });
+
 
 //CREATE a new spot
 router.post('/', requireAuth, async (req, res, next) => {
@@ -59,6 +61,7 @@ if(Object.keys(error).length) {
   res.json(newSpot);
 });
 
+
 //GET spots of current user
 router.get('/current', requireAuth, async (req, res) => {
   let allSpots = await Spot.findAll({
@@ -85,6 +88,7 @@ router.get('/current', requireAuth, async (req, res) => {
   res.json({Spots:newarray});
 });
 
+
 //GET spot by Id
 router.get('/:spotId', async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
@@ -108,6 +112,7 @@ router.get('/:spotId', async (req, res) => {
 
 res.json(spotObj);
 });
+
 
 //DELETE a spot by id
 router.delete('/:spotId', requireAuth, async (req, res) => {
@@ -156,6 +161,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
       res.json(spot);
 });
 
+
 //CREATE an image for spot by spot Id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const {url, preview} = req.body;
@@ -176,6 +182,15 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   });
 });
 
+//GET all reviews by Spot Id
+router.post('/:spotId/reviews', async (req, res) => {
+  let reviews = await Review.findAll({
+    include: [{model:Spot,
+        where: {id: req.params.spotId},
+        attributes: ['id', 'firstName', 'lastName']}]
+      });
+
+});
 
 // router.use((req, res, next) => {
 //     const err = new Error('sorry brah nothing to see here');
