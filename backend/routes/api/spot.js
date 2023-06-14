@@ -89,7 +89,7 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:spotId', async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
     include: [{model:SpotImage,
-      attributes: ['url']},
+      attributes: ['id', 'url', 'preview']},
       {model:Review},
       {model:User, as: 'Owner',
       attributes:['id', 'firstName', 'lastName']}]
