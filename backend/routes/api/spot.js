@@ -4,7 +4,7 @@ const router = express.Router();
 const { Op, Error } = require('sequelize');
 const {requireAuth} = require('../../utils/auth.js');
 
-
+//GET all spots
 router.get('/', async (req, res) => {
     let allSpots = await Spot.findAll(
       {include: [{model:SpotImage,
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     res.json({Spots:newarray});
 });
 
-
+//CREATE a new spot
 router.post('/', requireAuth, async (req, res, next) => {
   let error = {};
   const {address, city, state, country, lat, lng, name, description, price} = req.body
@@ -59,7 +59,7 @@ if(Object.keys(error).length) {
   res.json(newSpot);
 });
 
-
+//GET spots of current user
 router.get('/current', requireAuth, async (req, res) => {
   let allSpots = await Spot.findAll({
       where: {ownerId: req.user.dataValues.id },
@@ -85,7 +85,7 @@ router.get('/current', requireAuth, async (req, res) => {
   res.json({Spots:newarray});
 });
 
-
+//GET spot by Id
 router.get('/:spotId', async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
     include: [{model:SpotImage,
@@ -109,6 +109,7 @@ router.get('/:spotId', async (req, res) => {
 res.json(spotObj);
 });
 
+//DELETE a spot by id
 router.delete('/:spotId', requireAuth, async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId);
   if(!spot || spot.ownerId !== req.user.dataValues.id) {
@@ -119,6 +120,8 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   return res.json({"message": "Successfully deleted"})
 });
 
+
+//EDIT an existing spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
   let spot = await Spot.findByPk(req.params.spotId);
   if(!spot || spot.ownerId !== req.user.dataValues.id) {
@@ -153,7 +156,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
       res.json(spot);
 });
 
-
+//CREATE an image for spot by spot Id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const {url, preview} = req.body;
   const spot = await Spot.findByPk(req.params.spotId);
@@ -180,6 +183,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 //     next(err);
 //   });
 
+//Error handler
   router.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     res.status(statusCode);
