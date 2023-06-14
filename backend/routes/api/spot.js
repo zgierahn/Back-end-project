@@ -2,7 +2,7 @@ const express = require('express');
 const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 const { Op, Error } = require('sequelize');
-const {requireAuth} = require('../../utils/auth.js')
+const {requireAuth} = require('../../utils/auth.js');
 
 
 router.get('/', async (req, res) => {
@@ -163,8 +163,8 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   }
   const newImage = await SpotImage.create({
         spotId: spot.id,
-        url: 'fresh new image',
-        preview: true
+        url: url,
+        preview: preview
   })
   res.json({
     id: newImage.id,
