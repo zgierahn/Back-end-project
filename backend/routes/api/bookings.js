@@ -32,7 +32,7 @@ let bookarray = [];
             break;
             }
             booking.Spot.previewImage = 'no image';
-        }
+    }
         delete booking.Spot.SpotImages;
         bookarray.push(booking);
     });

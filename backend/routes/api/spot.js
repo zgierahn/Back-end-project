@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage, Review, User, ReviewImage } = require('../../db/models');
+const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
 const router = express.Router();
 const { Op, Error } = require('sequelize');
 const {requireAuth} = require('../../utils/auth.js');
@@ -244,13 +244,42 @@ res.json(newReview)
 
 
 //Get Bookings based on the Spot's id
-router.get(':spotId/bookings', requireAuth, async (req, res) => {
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+  let spotBookings = await Spot.findByPk(req.params.spotId,{
+    attributes: ['ownerId'],
+    include: {model:Booking,
+              // attributes:['spotId', 'startDate', 'endDate'],
+              include:{model:User, as: "User",
+              attributes: ["id", 'firstName', 'lastName']}},
+    });
 
-  res.json('Success!')
+if(!spotBookings){
+  res.status(404);
+  return res.json({"message": "Spot couldn't be found"})
+}
+
+spotBookings = spotBookings.toJSON();
+
+if(spotBookings.ownerId !== req.user.dataValues.id){
+  let newBookingArray = []
+  for(let booking of spotBookings.Bookings){
+    
+    let newObj = {
+      "spotId": booking.spotId,
+      "startDate": booking.startDate,
+      "endDate": booking.endDate
+    }
+  newBookingArray.push(newObj)
+  }
+  return res.json({Bookings:newBookingArray})
+}
+
+delete spotBookings.ownerId
+  res.json(spotBookings)
 });
 
 //Create Booking based on the Spot's id
-router.post(':spotId/bookings', requireAuth, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
   res.json('Success!')
 });
