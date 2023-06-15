@@ -279,8 +279,10 @@ delete spotBookings.ownerId
 });
 
 //Create Booking based on the Spot's id
-router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 // Spot must NOT belong to the current user
+let error = {};
+let {startDate, endDate} = req.body;
 let spotBookings = await Spot.findByPk(req.params.spotId,{
   attributes: ['ownerId'],
   include: {model:Booking,
@@ -295,6 +297,22 @@ let spotBookings = await Spot.findByPk(req.params.spotId,{
 if(spotBookings.ownerId === req.user.dataValues.id) {
   res.status(403);
   return res.json({message: 'Not authorized to book your own spot'})
+}
+spotBookings = spotBookings.toJSON();
+for(let each of spotBookings.Bookings) {
+  if(startDate >= each.startDate && startDate <= each.endDate){
+    error.startDate = 'startDate cannot overlap bookings'
+  }
+  if(endDateDate >= each.startDate && endDateDate <= each.endDate){
+    error.endDate = "endDate cannot overlap bookings"
+  }
+}
+
+if(Object.keys(error).length) {
+  const err = new Error('Bad Resquest');
+  err.error = error;
+  err.statusCode = 400;
+  return next(err);
 }
 
   res.json(spotBookings)
