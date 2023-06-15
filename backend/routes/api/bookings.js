@@ -43,9 +43,62 @@ let bookarray = [];
 
 
 //Edit a Booking
-router.put('/:bookingId', requireAuth, async (req, res) => {
+router.put('/:bookingId', requireAuth, async (req, res, next) => {
+    let booking = await Booking.findByPk(req.params.bookingId);
+    let spot = await Spot.findOne({
+        where: {id: booking.spotId},
+        include: {model: Booking}
+    });
+    let {startDate, endDate} = req.body;
+    if(!booking ) {
+        res.status(404);
+        return res.json({"message": "Booking couldn't be found"})
+    }
+    if(booking.userId !== req.user.dataValues.id) {
+        res.status(403);
+        return res.json({message: "Not allowed to edit booking"})
+    }
+    const err = new Error('Bad Resquest'); //setting up handler
+    let error = {};
+    let newStartDate = new Date(startDate)
+    let today = new Date();
+    if(newStartDate <= today) {
+        error.notCurrent = 'Date must be booked in the future'
+    }
+    else {
+      spot = spot.toJSON();
+    for(let each of spot.Bookings) {
+        if(startDate >= each.startDate && startDate <= each.endDate){
+            error.startDate = 'startDate cannot overlap bookings'
+            err.statusCode = 403;
+            err.message = "Sorry, this spot is already booked for the specified dates"
+        }
+      if(endDate >= each.startDate && endDate <= each.endDate){
+        error.endDate = "endDate cannot overlap bookings"
+        err.statusCode = 403;
+        err.message = "Sorry, this spot is already booked for the specified dates"
+      }
+    }
+  }
+if(startDate <= today || startDate > endDate ) {
+    error.validstart = "Must be valid start date",
+    error.validend = "Must be after start date"
 
-    res.json('Success!')
+}
+
+  let newbooking = await booking.set({
+      startDate: startDate,
+      endDate: endDate
+    })
+
+    if(Object.keys(error).length) {
+      err.error = error;
+      err.statusCode = err.statusCode ? err.statusCode : 400;
+      return next(err);
+    }
+
+    await newbooking.save();
+    res.json(newbooking)
 });
 
 
@@ -58,9 +111,15 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 
 
 
-
-
-
+//Error handler
+router.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode);
+    res.json({
+      message: err.message || "Bad Request",
+      error: err.error || 'error'
+    })
+  });
 
 
 

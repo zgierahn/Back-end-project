@@ -287,7 +287,6 @@ let {startDate, endDate} = req.body;
 let spotBookings = await Spot.findByPk(req.params.spotId,{
   attributes: ['ownerId'],
   include: {model:Booking,
-            // attributes:['spotId', 'startDate', 'endDate'],
             include:{model:User, as: "User",
             attributes: ["id", 'firstName', 'lastName']}},
   });
