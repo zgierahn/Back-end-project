@@ -39,10 +39,35 @@ router.get('/current',  requireAuth, async (req, res) => {
 //Add Image to Review based on Review id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
     // Review must belong to the current user
-    let reviews = await Review.findAll({
-        where: {id: req.params.reviewId}
+    let review = await Review.findOne({
+        where: {id: req.params.reviewId,
+            userId: req.user.dataValues.id},
+            include: {model:ReviewImage}
     });
+    if(!review) {
+        res.status(404);
+        res.json({"message": "Review couldn't be found"});
+    }
+    const { url } = req.body;
+    if(!url) return res.status(400).json({'message': "must provide a url"})
 
+    review = review.toJSON();
+    if(review.ReviewImages.length > 10) {
+         res.status(403)
+       return res.json({'message': "Maximum number of images for this resource was reached"})
+    }
+
+    let reviewImage = await ReviewImage.build({
+            reviewId : review.id,
+            url: url
+    });
+    await reviewImage.save();
+    reviewImage = reviewImage.toJSON();
+
+    res.json({
+        id: reviewImage.id,
+        url: reviewImage.url
+    })
 });
 
 
@@ -64,5 +89,6 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
 
 
 
+//npm install moment - can manipulate dates
 
 module.exports = router;
