@@ -71,6 +71,13 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 });
 
 
+router.put('/:reviewId', requireAuth, async (req, res) => {
+
+});
+
+
+
+
 
 //Delete a review
 router.delete('/:reviewId', requireAuth, async (req, res) => {
@@ -87,6 +94,16 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
 
 
 
+
+//Error handler
+router.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode);
+    res.json({
+      message: err.message || "Bad Request",
+      error: err.error || 'error'
+    })
+  });
 
 
 //npm install moment - can manipulate dates
