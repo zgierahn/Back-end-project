@@ -263,7 +263,7 @@ spotBookings = spotBookings.toJSON();
 if(spotBookings.ownerId !== req.user.dataValues.id){
   let newBookingArray = []
   for(let booking of spotBookings.Bookings){
-    
+
     let newObj = {
       "spotId": booking.spotId,
       "startDate": booking.startDate,
@@ -280,8 +280,24 @@ delete spotBookings.ownerId
 
 //Create Booking based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+// Spot must NOT belong to the current user
+let spotBookings = await Spot.findByPk(req.params.spotId,{
+  attributes: ['ownerId'],
+  include: {model:Booking,
+            // attributes:['spotId', 'startDate', 'endDate'],
+            include:{model:User, as: "User",
+            attributes: ["id", 'firstName', 'lastName']}},
+  });
+  if(!spotBookings) {
+    res.status(404);
+    return res.json({"message": "Spot couldn't be found"})
+  }
+if(spotBookings.ownerId === req.user.dataValues.id) {
+  res.status(403);
+  return res.json({message: 'Not authorized to book your own spot'})
+}
 
-  res.json('Success!')
+  res.json(spotBookings)
 });
 
 
