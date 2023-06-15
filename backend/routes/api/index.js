@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bookingRouter = require('./bookings.js');
 const reviewRouter = require('./review.js');
 const sessionRouter = require('./session.js');
 const spotRouter = require('./spot.js');
@@ -9,6 +10,8 @@ const { requireAuth } = require('../../utils/auth.js');
 
 
 router.use(restoreUser);
+
+router.use('/bookings', bookingRouter);
 
 router.use('/reviews', reviewRouter);
 
