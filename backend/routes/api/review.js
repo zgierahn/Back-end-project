@@ -37,11 +37,28 @@ router.get('/current',  requireAuth, async (req, res) => {
 
 
 //Add Image to Review based on Review id
-router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
-
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    // Review must belong to the current user
+    let reviews = await Review.findAll({
+        where: {id: req.params.reviewId}
+    });
 
 });
 
+
+
+//Delete a review
+router.delete('/:reviewId', requireAuth, async (req, res) => {
+    let review = await Review.findByPk(req.params.reviewId);
+    if(!review) return res.status(404).json({"message": "Review couldn't be found"})
+    if(review.userId !== req.user.dataValues.id) {
+        res.status(403);
+        res.json({"message": "Forbidden from deleting Review"})
+    } else {
+        await review.destroy();
+        res.json({"message": "Successfully deleted"});
+    }
+});
 
 
 
