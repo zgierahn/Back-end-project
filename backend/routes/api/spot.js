@@ -280,8 +280,9 @@ delete spotBookings.ownerId
 
 //Create Booking based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
-// Spot must NOT belong to the current user
-let error = {};
+  // Spot must NOT belong to the current user
+  const err = new Error('Bad Resquest'); //setting up handler
+  let error = {};
 let {startDate, endDate} = req.body;
 let spotBookings = await Spot.findByPk(req.params.spotId,{
   attributes: ['ownerId'],
@@ -298,24 +299,41 @@ if(spotBookings.ownerId === req.user.dataValues.id) {
   res.status(403);
   return res.json({message: 'Not authorized to book your own spot'})
 }
-spotBookings = spotBookings.toJSON();
-for(let each of spotBookings.Bookings) {
-  if(startDate >= each.startDate && startDate <= each.endDate){
-    error.startDate = 'startDate cannot overlap bookings'
-  }
-  if(endDateDate >= each.startDate && endDateDate <= each.endDate){
-    error.endDate = "endDate cannot overlap bookings"
+let newStartDate = new Date(startDate)
+let today = new Date();
+if(newStartDate <= today) {
+  error.notCurrent = 'Date must be booked in the future'
+}
+else {
+  spotBookings = spotBookings.toJSON();
+  for(let each of spotBookings.Bookings) {
+    if(startDate >= each.startDate && startDate <= each.endDate){
+      error.startDate = 'startDate cannot overlap bookings'
+      err.statusCode = 403;
+      err.message = "Sorry, this spot is already booked for the specified dates"
+    }
+    if(endDate >= each.startDate && endDate <= each.endDate){
+      error.endDate = "endDate cannot overlap bookings"
+      err.statusCode = 403;
+      err.message = "Sorry, this spot is already booked for the specified dates"
+    }
   }
 }
 
+let newBooking = await Booking.create({
+  spotId: req.params.spotId,
+  userId: req.user.dataValues.id,
+  startDate: startDate,
+  endDate: endDate
+})
+
 if(Object.keys(error).length) {
-  const err = new Error('Bad Resquest');
   err.error = error;
-  err.statusCode = 400;
+  err.statusCode = err.statusCode ? err.statusCode : 400;
   return next(err);
 }
 
-  res.json(spotBookings)
+  res.json(newBooking)
 });
 
 
