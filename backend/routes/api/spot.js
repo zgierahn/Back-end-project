@@ -215,7 +215,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
     where: {userId: sessionUser,
             spotId: spot.id}
   });
-  
+
 if(userReviews.length) {
  return  res.status(403).json(
   {"message": "User already has a review for this spot"});
@@ -243,7 +243,17 @@ res.json(newReview)
 
 
 
+//Get Bookings based on the Spot's id
+router.get(':spotId/bookings', requireAuth, async (req, res) => {
 
+  res.json('Success!')
+});
+
+//Create Booking based on the Spot's id
+router.post(':spotId/bookings', requireAuth, async (req, res) => {
+
+  res.json('Success!')
+});
 
 
 
