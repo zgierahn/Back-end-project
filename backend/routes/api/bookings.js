@@ -42,16 +42,16 @@ let bookarray = [];
 
 //Edit a Booking
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
+  let {startDate, endDate} = req.body;
     let booking = await Booking.findByPk(req.params.bookingId);
+    if(!booking) {
+        res.status(404);
+        return res.json({message: "Booking couldn't be found"})
+    }
     let spot = await Spot.findOne({
         where: {id: booking.spotId},
         include: {model: Booking}
     });
-    let {startDate, endDate} = req.body;
-    if(!booking || !spot) {
-        res.status(404);
-        return res.json({message: "Booking couldn't be found"})
-    }
     if(booking.userId !== req.user.dataValues.id) {
         res.status(403);
         return res.json({message: "Not allowed to edit booking"})
@@ -64,6 +64,10 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
         error.notCurrent = 'Date must be booked in the future'
     }
     else {
+      if(!spot) {
+        res.status(404);
+        return res.json({message: "Booking couldn't be found"})
+      }
       spot = spot.toJSON();
     for(let each of spot.Bookings) {
         if(startDate >= each.startDate && startDate <= each.endDate){
