@@ -22,7 +22,6 @@ router.get('/current',  requireAuth, async (req, res) => {
     let answer = [];
     reviews.forEach(review => {
         review = review.toJSON();
-        console.log('review object', review.Spot.SpotImages);
         for(let each of review.Spot.SpotImages) {
             if(each.preview) {
                 review.Spot.previewImage = each.url;

@@ -11,7 +11,6 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     let image = await ReviewImage.findByPk(req.params.imageId,
         {include: {model:Review}
     });
-    console.log('yes i wanna see this', image);
     if(!image || image.Review.userId !== req.user.dataValues.id) {
       res.statusCode = 404;
       return res.json({message: "Spot couldn't be found"});

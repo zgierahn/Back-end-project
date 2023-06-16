@@ -12,8 +12,8 @@ router.get('/', async (req, res, next) => {
   if(!size || size > 20) size = 20;
   if(size < 1) error.size = "Size must be greater than or equal to 1";
   if(page < 1) error.page = "Page must be greater than or equal to 1";
-    if(!page) page = 1;
-    if(page >= 10) page = 10;
+  if(!page) page = 1;
+  if(page >= 10) page = 10;
 
     page = parseInt(page);
     size = parseInt(size);
@@ -56,6 +56,7 @@ router.get('/', async (req, res, next) => {
 });
 
 
+
 //CREATE a new spot
 router.post('/', requireAuth, async (req, res, next) => {
   let error = {};
@@ -87,6 +88,7 @@ if(Object.keys(error).length) {
 });
 
 
+
 //GET spots of current user
 router.get('/current', requireAuth, async (req, res) => {
   let allSpots = await Spot.findAll({
@@ -114,6 +116,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
+
 //GET spot by Id
 router.get('/:spotId', async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
@@ -137,8 +140,6 @@ router.get('/:spotId', async (req, res) => {
 
 res.json(spotObj);
 });
-
-
 
 
 
@@ -178,6 +179,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 });
 
 
+
 //CREATE an image for spot by spot Id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   const {url, preview} = req.body;
@@ -197,6 +199,8 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     preview: newImage.preview
   });
 });
+
+
 
 //GET all reviews by Spot Id
 router.get('/:spotId/reviews', async (req, res) => {
@@ -218,9 +222,11 @@ router.get('/:spotId/reviews', async (req, res) => {
 });
 
 
+
 //Create a Review based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
   const { review, stars } = req.body;
+  let error = {};
   let sessionUser = req.user.dataValues.id;
   let spot = await Spot.findByPk(req.params.spotId);
   if(!spot) {
@@ -236,8 +242,6 @@ if(userReviews.length) {
  return  res.status(403).json(
   {"message": "User already has a review for this spot"});
 };
-
-  let error = {};
 
   let newReview = await Review.build({
     userId: sessionUser ? sessionUser : error.sessionUser = 'Session user is required',
@@ -293,6 +297,8 @@ if(spotBookings.ownerId !== req.user.dataValues.id){
 delete spotBookings.ownerId
   res.json(spotBookings)
 });
+
+
 
 //Create Booking based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {

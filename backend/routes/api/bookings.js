@@ -24,9 +24,7 @@ if(!bookings) {
 let bookarray = [];
     bookings.forEach(booking => {
         booking = booking.toJSON();
-        console.log('booking object', booking.Spot);
         for(let each of booking.Spot.SpotImages) {
-        console.log('each preview', each);
             if(each.preview) {
             booking.Spot.previewImage = each.url;
             break;
