@@ -6,11 +6,29 @@ const {requireAuth} = require('../../utils/auth.js');
 
 
 //GET all spots
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
+  let error = {};
+  let {page, size} = req.query;
+  if(!size || size > 20) size = 20;
+  if(size < 1) error.size = "Size must be greater than or equal to 1";
+  if(page < 1) error.page = "Page must be greater than or equal to 1";
+    if(!page) page = 1;
+    if(page >= 10) page = 10;
+
+    page = parseInt(page);
+    size = parseInt(size);
+    let pagination = {};
+
+    if (page >= 1 && size >= 1) {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    }
+
     let allSpots = await Spot.findAll(
       {include: [{model:SpotImage,
         attributes: ['url']},
-        {model:Review}]
+        {model:Review}],
+        ...pagination
     });
     let newarray = [];
     allSpots.forEach(spot => {
@@ -27,7 +45,14 @@ router.get('/', async (req, res) => {
       newarray.push(spotObj)
     });
 
-    res.json({Spots:newarray});
+    if(Object.keys(error).length) {
+      const err = new Error('Bad Resquest');
+      err.error = error;
+      err.statusCode = 400;
+      return next(err);
+    }
+
+    res.json({Spots:newarray, page, size });
 });
 
 
@@ -114,7 +139,7 @@ res.json(spotObj);
 });
 
 
- 
+
 
 
 //EDIT an existing spot
