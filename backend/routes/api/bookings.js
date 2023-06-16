@@ -105,7 +105,7 @@ if(startDate <= today || startDate > endDate ) {
 
 //Delete a Booking
 router.delete('/:bookingId', requireAuth, async (req, res) => {
-    let booking = await Booking.findByPk(req.params.spotId);
+    let booking = await Booking.findByPk(req.params.bookingId);
     if(!booking || booking.userId !== req.user.dataValues.id) {
       res.statusCode = 404;
       return res.json({message: "Spot couldn't be found"});
