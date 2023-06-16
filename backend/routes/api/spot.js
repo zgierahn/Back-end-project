@@ -363,6 +363,23 @@ let newBooking = await Booking.create({
 });
 
 
+//Delete a spot
+router.delete('/:spotId', requireAuth, async (req, res) => {
+  let spot = await Spot.findByPk(req.params.spotId);
+  if(!spot) {
+    res.status(404);
+    return res.json({message: "Spot couldn't be found"});
+  }
+if(spot.ownerId !== req.user.dataValues.id) {
+  res.status(403);
+  return res.json({message: "Forbidden from deleting this spot"})
+}
+
+await spot.destroy();
+  res.json({message: "Successfully deleted"});
+});
+
+
 
 //Error handler
   router.use((err, req, res, next) => {
