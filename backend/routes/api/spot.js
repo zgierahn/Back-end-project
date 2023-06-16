@@ -345,6 +345,12 @@ else {
   }
 }
 
+if(Object.keys(error).length) {
+  err.error = error;
+  err.statusCode = err.statusCode ? err.statusCode : 400;
+  return next(err);
+}
+
 let newBooking = await Booking.create({
   spotId: req.params.spotId,
   userId: req.user.dataValues.id,
@@ -352,11 +358,6 @@ let newBooking = await Booking.create({
   endDate: endDate
 })
 
-if(Object.keys(error).length) {
-  err.error = error;
-  err.statusCode = err.statusCode ? err.statusCode : 400;
-  return next(err);
-}
 
   res.json(newBooking)
 });
