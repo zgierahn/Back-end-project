@@ -82,22 +82,23 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
       }
     }
   }
-if(startDate <= today || startDate > endDate ) {
-    error.validstart = "Must be valid start date",
+if(startDate <= today){
+  error.validstart = "Must be valid start date"
+}
+if(startDate > endDate) {
     error.validend = "Must be after start date"
-
 }
 
-  let newbooking = await booking.set({
-      startDate: startDate,
-      endDate: endDate
-    })
+if(Object.keys(error).length) {
+  err.error = error;
+  err.statusCode = err.statusCode ? err.statusCode : 400;
+  return next(err);
+}
 
-    if(Object.keys(error).length) {
-      err.error = error;
-      err.statusCode = err.statusCode ? err.statusCode : 400;
-      return next(err);
-    }
+let newbooking = await booking.set({
+    startDate: startDate,
+    endDate: endDate
+});
 
     await newbooking.save();
     res.json(newbooking)
