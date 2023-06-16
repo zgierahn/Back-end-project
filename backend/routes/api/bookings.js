@@ -50,7 +50,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     let {startDate, endDate} = req.body;
     if(!booking ) {
         res.status(404);
-        return res.json({"message": "Booking couldn't be found"})
+        return res.json({message: "Booking couldn't be found"})
     }
     if(booking.userId !== req.user.dataValues.id) {
         res.status(403);
