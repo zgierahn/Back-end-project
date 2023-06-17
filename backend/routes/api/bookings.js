@@ -60,7 +60,8 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     let error = {};
     let newStartDate = new Date(startDate)
     let today = new Date();
-    if(booking.startDate <= today){
+    let existingstartdate = new Date(booking.startDate);
+    if(existingstartdate <= today){
       res.status(403);
         return res.json({message: "Not allowed to edit booking already in use"})
     }
