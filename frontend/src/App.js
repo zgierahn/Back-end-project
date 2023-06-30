@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpots from "./components/Spots";
+import SpotForm from './components/Forms/SpotForm';
 
 function App() {
   const dispatch = useDispatch();
@@ -17,9 +18,15 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded &&
         <Switch>
-          <Route exact path='/'>
+
+          <Route exact path='/allspots'>
             <GetAllSpots />
           </Route>
+
+          <Route exact path='/spotform'>
+            <SpotForm />
+          </Route>
+
         </Switch>}
     </>
   );
