@@ -1,10 +1,9 @@
-import { useDispatch } from "react-redux";
 import { csrfFetch } from "./csrf";
 
 //types
 const GET_ALL_SPOTS = 'spots/GetAllSpots';
 const EDIT_EXISTING_SPOT = 'spots/EditExistingSpot';
-const CREATE_NEW_SPOT = 'spots/PostNewSpot';
+const CREATE_NEW_SPOT = 'spots/CreateNewSpot';
 const DELETE_SPOT = 'spots/DeleteSpot';
 
 
@@ -37,7 +36,6 @@ export const thunkGetSpots = () => async (dispatch) => {
         const res = await fetch('/api/spots');
 
         if(res.ok) {
-            const dispatch = useDispatch();
             const response = await res.json();
             dispatch(actionGetSpots(response));
 
@@ -48,8 +46,7 @@ export const thunkGetSpots = () => async (dispatch) => {
 
 export const thunkCreateNewSpot = (data) => async (dispatch) => {
     try {
-
-        const res = await csrfFetch('/api/spotform', {
+        const res = await csrfFetch('/api/spots', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -69,18 +66,21 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
 
 }
 
+const intitialState = {
+    allSpots: {},
+    singleSpot: {}
 
+};
 
 //reducers
-export default function SpotsReducer (state = {}, action) {
+export default function SpotsReducer (state = intitialState, action) {
     switch(action.type) {
         case GET_ALL_SPOTS :{
-            console.log('whats this', action.payload);
-            return {...state, ...action.payload.Spots}
+            return {...state, allSpots: {...action.payload.Spots}}
         };
         case CREATE_NEW_SPOT : {
-
-            return null
+            console.log('this is the payload', action.spot);
+            return {...state, singleSpot: { [action.spot.id] : action.spot}}
         }
         case EDIT_EXISTING_SPOT : {
             return null

@@ -12,7 +12,7 @@ useEffect(() => {
     dispatch(thunkGetSpots())
 }, [dispatch]);
 
-const spotsObj = useSelector(state => state.spots);
+const spotsObj = useSelector(state => state.spots.allSpots);
 
 const spotsArray = Object.values(spotsObj);
 console.log('show me the money', spotsArray);
@@ -20,9 +20,9 @@ console.log('show me the money', spotsArray);
     return (
         <div>
             <div>GetAllSpots</div>
-            {/* {spotsArray.map(spot =>{
-                 return<div>{spot}</div>
-            })} */}
+            {spotsArray.map(spot =>{
+                 return<p>{spot.address}</p>
+            })}
         </div>
   )
 };

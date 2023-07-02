@@ -5,7 +5,6 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpots from "./components/Spots";
 import SpotForm from './components/Forms/SpotForm';
-import CreateSpotForm from "./components/Forms/CreateSpotForm";
 import EditSpotForm from "./components/Forms/EditSpotForm";
 
 function App() {
@@ -21,12 +20,12 @@ function App() {
       {isLoaded &&
         <Switch>
 
-          <Route exact path='/allspots'>
+          <Route exact path='/'>
             <GetAllSpots />
           </Route>
 
           <Route exact path='/spots/new'>
-            <CreateSpotForm />
+            <SpotForm />
           </Route>
 
           <Route exact path='/spots/:spotId/edit'>
