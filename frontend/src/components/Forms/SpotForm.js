@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { thunkCreateNewSpot } from '../../store/spotsReducer';
+import { thunkCreateNewSpotImage } from '../../store/spotsReducer';
 
 
 
-
+//works
 function SpotForm() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
@@ -18,6 +19,7 @@ function SpotForm() {
   const [price, setPrice] = useState('');
   const [lat, setLat] = useState(90);
   const [lng, setLng] = useState(90);
+  const [url, setUrl] = useState('');
 
 
 
@@ -26,6 +28,7 @@ const handleSubmit = async (e) => {
   // let errors = {};
   // setErrors({});
   let spot = {address, city, state, country, name, description, price, lat, lng}
+  let image = {url};
   // if(!address) {errors.address = "Must have a valid address"}
   // if(!city) {errors.city = "Must have a valid city"}
   // if(!state) {errors.state = "Must have a valid state"}
@@ -37,6 +40,8 @@ const handleSubmit = async (e) => {
   // if(!lng){errors.longitude = "Must have a valid longitude"}
   // setErrors(errors);
   const submitSpot =  await dispatch(thunkCreateNewSpot(spot));
+  const submitImage = await dispatch(thunkCreateNewSpotImage(image, submitSpot.id))
+
 }
 
 
@@ -105,6 +110,15 @@ const handleSubmit = async (e) => {
         />
       </label>
       {/* {errors.price && <div className="errors">{errors.price}</div>} */}
+      {/* url and preview image true/false */}
+      <label>
+        Image Url:
+        <input
+          type="text"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+      </label>
 
       <button type="submit" onClick={handleSubmit}>Show me the money!</button>
     </form>

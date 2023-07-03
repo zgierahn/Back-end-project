@@ -7,6 +7,7 @@ import GetAllSpots from "./components/Spots/GetAllSpots";
 import GetSingleSpot from "./components/Spots/GetSingleSpot";
 import SpotForm from './components/Forms/SpotForm';
 import EditSpotForm from "./components/Forms/EditSpotForm";
+import DeleteSpot from "./components/Spots/DeleteSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,16 +26,20 @@ function App() {
             <GetAllSpots />
           </Route>
 
-          <Route exact path='/spots/:spotId'>
-            <GetSingleSpot />
-          </Route>
-
           <Route exact path='/spots/new'>
             <SpotForm />
           </Route>
 
+            <Route exact path='/spots/:spotId'>
+            <GetSingleSpot />
+          </Route>
+
           <Route exact path='/spots/:spotId/edit'>
             <EditSpotForm />
+          </Route>
+
+          <Route exact path='/spots/:spotId/delete'>
+            <DeleteSpot />
           </Route>
 
         </Switch>}

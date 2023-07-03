@@ -6,6 +6,7 @@ const GET_SINGLE_SPOT = 'spots/GetSingleSpot';
 const EDIT_EXISTING_SPOT = 'spots/EditExistingSpot';
 const CREATE_NEW_SPOT = 'spots/CreateNewSpot';
 const DELETE_SPOT = 'spots/DeleteSpot';
+const CREATE_SPOT_IMAGE = 'spots/CreateImage';
 
 
 
@@ -35,6 +36,10 @@ export const actionDeleteSpot = (spot) => ({
     spot
 });
 
+export const actionCreateSpotImage = (image) => ({
+    type: CREATE_SPOT_IMAGE,
+    image
+});
 
 
 //thunk funcs
@@ -67,6 +72,23 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
 };
 
 
+export const thunkDeleteSpot = (spotId) => async (dispatch) => {
+    try {
+    const res = await csrfFetch(`/api/spots/${spotId}`);
+
+    if(res.ok) {
+        const spot = await res.json();
+        dispatch(actionDeleteSpot(spot));
+        return spot;
+    }
+    } catch (error) {
+        const err = await error.json();
+        console.log(err);
+        return err;
+    }
+};
+
+
 export const thunkCreateNewSpot = (data) => async (dispatch) => {
     try {
         const res = await csrfFetch('/api/spots', {
@@ -79,6 +101,28 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
         const newSpot = await res.json();
             dispatch(actionCreateSpot(newSpot));
             return newSpot;
+        }
+
+    } catch (error) {
+        const err = await error.json();
+        console.log(err);
+        return err;
+    }
+};
+
+//in progress
+export const thunkCreateNewSpotImage = (data, spotId) => async (dispatch) => {
+    try {
+        const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+
+        if(res.ok) {
+        const image = await res.json();
+            dispatch(actionCreateSpotImage(image));
+            return image;
         }
 
     } catch (error) {
@@ -128,12 +172,19 @@ export default function SpotsReducer (state = intitialState, action) {
         case CREATE_NEW_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
         }
+        //in progress
+        case CREATE_SPOT_IMAGE : {
+            return {...state, singleSpot: action.singleSpot.image}
+        }
         case EDIT_EXISTING_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
         }
+        //in progress
         case DELETE_SPOT : {
             const  newState = {...state}
-            
+            console.log('newstate', newState);
+            console.log('action', action);
+            return
         }
         default:
              return state

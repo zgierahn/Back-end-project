@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
 
-
+//works
 export default function GetSingleSpot() {
     const dispatch = useDispatch();
     const { spotId } = useParams()
@@ -15,7 +15,7 @@ useEffect(() => {
 
 const spotsObj = useSelector(state => state.spots.singleSpot);
 
-console.log('this is my object', spotsObj);
+
 
     return (
         <div>

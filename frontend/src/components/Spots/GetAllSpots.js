@@ -1,4 +1,3 @@
-// import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkGetSpots } from '../../store/spotsReducer';
@@ -18,7 +17,7 @@ const spotsArray = Object.values(spotsObj);
 
     return (
         <div>
-            <div>GetAllSpots</div>
+            <h1>GetAllSpots</h1>
             {spotsArray.map(spot =>{
                  return<p>{spot.address}</p>
             })}

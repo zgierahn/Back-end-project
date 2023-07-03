@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { thunkEditSpot, thunkGetSingleSpot } from '../../store/spotsReducer';
 
 
-
+//works
 function EditSpotForm() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
