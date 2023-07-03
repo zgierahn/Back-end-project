@@ -24,9 +24,9 @@ function EditSpotForm() {
 
 
   useEffect(()=> {
-    // (async () => {
-    dispatch(thunkGetSingleSpot(spotId))  //removed dispatch
-    // })()
+
+    dispatch(thunkGetSingleSpot(spotId))
+
   }, []);
 
 
@@ -35,7 +35,7 @@ function EditSpotForm() {
 const handleSubmit = async (e) => {
   e.preventDefault();
   let spot = {address, city, state, country, name, description, price, lat, lng}
-  const updateSpot =  await dispatch(thunkEditSpot(spot));
+  const updateSpot =  await dispatch(thunkEditSpot(spot, spotId));
   console.log('this the new spot', updateSpot);
 };
 

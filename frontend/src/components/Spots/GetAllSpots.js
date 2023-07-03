@@ -15,7 +15,6 @@ useEffect(() => {
 const spotsObj = useSelector(state => state.spots.allSpots);
 
 const spotsArray = Object.values(spotsObj);
-console.log('show me the money', spotsArray);
 
     return (
         <div>

@@ -88,10 +88,10 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
     }
 };
 
-export const thunkEditSpot = (data) => async (dispatch) => {
+export const thunkEditSpot = (data, spotId) => async (dispatch) => {
     try {
-        const res = await csrfFetch('/api/spots/:spotId', {
-            method: 'POST',
+        const res = await csrfFetch(`/api/spots/${spotId}`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
@@ -133,6 +133,7 @@ export default function SpotsReducer (state = intitialState, action) {
         }
         case DELETE_SPOT : {
             const  newState = {...state}
+            
         }
         default:
              return state
