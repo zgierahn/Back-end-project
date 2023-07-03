@@ -5,7 +5,8 @@ import { thunkCreateNewSpot } from '../../store/spotsReducer';
 
 
 
-function SpotForm({ formType }) {
+
+function SpotForm() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [address, setAddress] = useState('');
@@ -36,8 +37,6 @@ const handleSubmit = async (e) => {
   // if(!lng){errors.longitude = "Must have a valid longitude"}
   // setErrors(errors);
   const submitSpot =  await dispatch(thunkCreateNewSpot(spot));
-  console.log('this my new spot G', submitSpot);
-
 }
 
 
