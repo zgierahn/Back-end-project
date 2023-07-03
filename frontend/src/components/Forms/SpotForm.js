@@ -40,7 +40,7 @@ const handleSubmit = async (e) => {
   // if(!lng){errors.longitude = "Must have a valid longitude"}
   // setErrors(errors);
   const submitSpot =  await dispatch(thunkCreateNewSpot(spot));
-  const submitImage = await dispatch(thunkCreateNewSpotImage(image, submitSpot.id))
+  // const submitImage = await dispatch(thunkCreateNewSpotImage(image, submitSpot.id))
 
 }
 
@@ -111,14 +111,14 @@ const handleSubmit = async (e) => {
       </label>
       {/* {errors.price && <div className="errors">{errors.price}</div>} */}
       {/* url and preview image true/false */}
-      <label>
+      {/* <label>
         Image Url:
         <input
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
-      </label>
+      </label> */}
 
       <button type="submit" onClick={handleSubmit}>Show me the money!</button>
     </form>

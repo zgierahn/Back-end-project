@@ -31,9 +31,9 @@ export const actionCreateSpot = (spot) => ({
     spot
 });
 
-export const actionDeleteSpot = (spot) => ({
+export const actionDeleteSpot = (spotId) => ({
     type: DELETE_SPOT,
-    spot
+    spotId
 });
 
 export const actionCreateSpotImage = (image) => ({
@@ -74,7 +74,9 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
 
 export const thunkDeleteSpot = (spotId) => async (dispatch) => {
     try {
-    const res = await csrfFetch(`/api/spots/${spotId}`);
+    const res = await csrfFetch(`/api/spots/${spotId}`,{
+        method: 'DELETE'
+    });
 
     if(res.ok) {
         const spot = await res.json();
@@ -182,9 +184,11 @@ export default function SpotsReducer (state = intitialState, action) {
         //in progress
         case DELETE_SPOT : {
             const  newState = {...state}
-            console.log('newstate', newState);
-            console.log('action', action);
-            return
+            console.log('this is my newstate', newState);
+            console.log('this is my action', action);
+            console.log('what im trying to delete', newState.allSpots[action.spotId]);
+            delete newState.allSpots[action.spotId]
+            return newState
         }
         default:
              return state
