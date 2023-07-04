@@ -22,6 +22,7 @@ function SpotsByOwner() {
     {spotsArray.map(spot =>{
          return (  <div>
             <img className= 'previewImage' src={spot.previewImage ? spot.previewImage : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+             <p>{spot.address}</p>
              <p key={spot.city}>{spot.city}</p>
              <p key={spot.state}>{spot.state}</p>
              <p>Price: {spot.price}</p>

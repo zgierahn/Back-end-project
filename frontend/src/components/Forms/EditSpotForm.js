@@ -6,41 +6,34 @@ import { thunkEditSpot, thunkGetSingleSpot } from '../../store/spotsReducer';
 
 
 //works
-function EditSpotForm() {
+function EditSpotForm({spotObj}) {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  let spotObj = useSelector(state=>state.spots.singleSpot);
-  console.log('this is my array', spotObj);
-
-
-
+  console.log('this is spotObj', spotObj);
+  // let spotObj = useSelector(state=>state.spots.singleSpot);
+  // console.log('what is this', spotObj);
   // const [errors, setErrors] = useState({});
-  const [address, setAddress] = useState(''); // spotObj.address
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
+  const [address, setAddress] = useState(spotObj.address); // spotObj.address
+  const [city, setCity] = useState(spotObj.city);
+  const [state, setState] = useState(spotObj.state);
+  const [country, setCountry] = useState(spotObj.country);
+  const [name, setName] = useState(spotObj.name);
+  const [description, setDescription] = useState(spotObj.description);
+  const [price, setPrice] = useState(spotObj.price);
   const [lat, setLat] = useState(90);
   const [lng, setLng] = useState(90);
 
 
-  useEffect(()=> {
+if(!spotId || !Object.values(spotObj).length) return null
 
-    dispatch(thunkGetSingleSpot(spotId))
-
-
-  }, [dispatch]);
-
-  if(!Object.values(spotObj).length) { return null }
 
 
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  let spot = {address, city, state, country, name, description, price, lat, lng}
-  const updateSpot =  await dispatch(thunkEditSpot(spot, spotId));
+  //spread spotObj in
+  let spot = {...spotObj, address, city, state, country, name, description, price, lat, lng}
+  const updateSpot =  await dispatch(thunkEditSpot(spot )); //removed spotId
   console.log('this the new spot', updateSpot);
 };
 

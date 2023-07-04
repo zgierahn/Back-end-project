@@ -147,9 +147,9 @@ export const thunkCreateNewSpotImage = (data, spotId) => async (dispatch) => {
 };
 
 
-export const thunkEditSpot = (data, spotId) => async (dispatch) => {
+export const thunkEditSpot = (data) => async (dispatch) => { //removed spotId
     try {
-        const res = await csrfFetch(`/api/spots/${spotId}`, {
+        const res = await csrfFetch(`/api/spots/${data.id}`, { //had spotId
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

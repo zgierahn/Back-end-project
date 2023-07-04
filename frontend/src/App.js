@@ -6,10 +6,11 @@ import Navigation from "./components/Navigation";
 import GetAllSpots from "./components/Spots/GetAllSpots";
 import GetSingleSpot from "./components/Spots/GetSingleSpot";
 import SpotForm from './components/Forms/SpotForm';
-import EditSpotForm from "./components/Forms/EditSpotForm";
+// import EditSpotForm from "./components/Forms/EditSpotForm";
 import DeleteSpot from "./components/Spots/DeleteSpot";
 import SpotsByOwner from "./components/Spots/SpotsByOwner";
 import ReviewsByUser from "./components/Reviews/ReviewsByUser";
+import GrabDataForEdit from "./components/Forms/GrabDataForEdit"; // delete this
 
 function App() {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ function App() {
           </Route>
 
           <Route exact path='/spots/:spotId/edit'>
-            <EditSpotForm />
+            <GrabDataForEdit />
           </Route>
 
           <Route exact path='/spots/:spotId/delete'>
