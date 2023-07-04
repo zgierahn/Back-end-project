@@ -55,6 +55,18 @@ export const thunkGetSpots = () => async (dispatch) => {
 }
 
 
+export const thunkGetUserSpots = () => async (dispatch) => {
+    const res = await fetch('/api/spots/current');
+
+    if(res.ok) {
+        const response = await res.json();
+        dispatch(actionGetSpots(response));
+
+        return response;
+    }
+}
+
+
 export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
     try {
     const res = await csrfFetch(`/api/spots/${spotId}`);
@@ -134,6 +146,7 @@ export const thunkCreateNewSpotImage = (data, spotId) => async (dispatch) => {
     }
 };
 
+
 export const thunkEditSpot = (data, spotId) => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/${spotId}`, {
@@ -155,12 +168,12 @@ export const thunkEditSpot = (data, spotId) => async (dispatch) => {
 };
 
 
-
 const intitialState = {
     allSpots: {},
     singleSpot: {}
 
 };
+
 
 //reducers
 export default function SpotsReducer (state = intitialState, action) {
@@ -181,12 +194,9 @@ export default function SpotsReducer (state = intitialState, action) {
         case EDIT_EXISTING_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
         }
-        //in progress
+
         case DELETE_SPOT : {
             const  newState = {...state}
-            console.log('this is my newstate', newState);
-            console.log('this is my action', action);
-            console.log('what im trying to delete', newState.allSpots[action.spotId]);
             delete newState.allSpots[action.spotId]
             return newState
         }

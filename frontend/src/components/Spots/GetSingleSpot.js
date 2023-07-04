@@ -14,14 +14,21 @@ useEffect(() => {
 }, [dispatch]);
 
 const spotsObj = useSelector(state => state.spots.singleSpot);
+console.log('spotsObj', spotsObj);
 
+if(!Object.values(spotsObj).length){
+    return null
+}
 
+let imgArray = Object.values(spotsObj.SpotImages);
+let url = imgArray[0].url;
+console.log('new img array', imgArray[0].url);
 
     return (
         <div>
-            <div>Get Single Spot</div>
-            <span><p>Owner Id:</p><p>{spotsObj.ownerId}</p></span>
-            <span><p>Address:</p><p>{spotsObj.address}</p></span>
+            <h1>{spotsObj.name}</h1>
+            <span><p>{spotsObj.city}, {spotsObj.state}, {spotsObj.country}</p></span>
+            <img className= 'previewImage' src={url ? url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
 
         </div>
   )
