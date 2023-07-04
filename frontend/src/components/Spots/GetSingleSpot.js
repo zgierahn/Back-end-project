@@ -16,9 +16,7 @@ useEffect(() => {
 const spotsObj = useSelector(state => state.spots.singleSpot);
 console.log('spotsObj', spotsObj);
 
-if(!Object.values(spotsObj).length){
-    return null
-}
+if(!Object.values(spotsObj).length) { return null }
 
 let imgArray = Object.values(spotsObj.SpotImages);
 let url = imgArray[0].url;

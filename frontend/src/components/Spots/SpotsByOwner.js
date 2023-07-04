@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkDeleteSpot, thunkGetUserSpots } from '../../store/spotsReducer';
+import { useHistory } from 'react-router-dom';
 
 
 function SpotsByOwner() {
+    const history = useHistory();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -26,7 +28,8 @@ function SpotsByOwner() {
          <button key={spot.id} onClick={(e)=>{
                 e.preventDefault();
                 return dispatch(thunkDeleteSpot(spot.id))
-            }}>delete</button>
+            }}>Delete</button>
+            <button onClick={(e)=>history.push(`/spots/${spot.id}/edit`)}>Update</button>
          </div>)
     })}
     </div>

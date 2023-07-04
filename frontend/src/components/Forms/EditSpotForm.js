@@ -9,10 +9,13 @@ import { thunkEditSpot, thunkGetSingleSpot } from '../../store/spotsReducer';
 function EditSpotForm() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  // let spot = useSelector(state => state.spots.singleSpot[spotId])
+  let spotObj = useSelector(state=>state.spots.singleSpot);
+  console.log('this is my array', spotObj);
+
+
 
   // const [errors, setErrors] = useState({});
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState(''); // spotObj.address
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
@@ -27,8 +30,10 @@ function EditSpotForm() {
 
     dispatch(thunkGetSingleSpot(spotId))
 
-  }, []);
 
+  }, [dispatch]);
+
+  if(!Object.values(spotObj).length) { return null }
 
 
 
