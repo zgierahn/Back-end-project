@@ -2,7 +2,7 @@ import SpotForm from './SpotForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { thunkEditSpot, thunkGetSingleSpot } from '../../store/spotsReducer';
+import { thunkEditSpot } from '../../store/spotsReducer';
 
 
 //works
@@ -11,7 +11,7 @@ function EditSpotForm({spotObj}) {
   const { spotId } = useParams();
   console.log('this is spotObj', spotObj);
   // const [errors, setErrors] = useState({});
-  const [address, setAddress] = useState(spotObj.address); // spotObj.address
+  const [address, setAddress] = useState(spotObj.address);
   const [city, setCity] = useState(spotObj.city);
   const [state, setState] = useState(spotObj.state);
   const [country, setCountry] = useState(spotObj.country);

@@ -36,10 +36,6 @@ export const actionDeleteSpot = (spotId) => ({
     spotId
 });
 
-export const actionCreateSpotImage = (image) => ({
-    type: CREATE_SPOT_IMAGE,
-    image
-});
 
 
 //thunk funcs
@@ -68,16 +64,16 @@ export const thunkGetUserSpots = () => async (dispatch) => {
 
 
 export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
-    // try {
+    try {
     const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if(res.ok) {
         const spot = await res.json();
         dispatch(actionGetSingleSpot(spot));
         return spot;
-    } else {
-    // } catch (error) {
-        const err = await res.json();
+    }
+    } catch (error) {
+        const err = await error.json();
         console.log(err);
         return err;
     }
@@ -113,7 +109,13 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
 
         if(res.ok) {
         const newSpot = await res.json();
-            dispatch(actionCreateSpot(newSpot));
+        console.log('in thunk create spot - data', data);
+        console.log('in thunk create spot - newspot', newSpot);
+            const imageData =
+            {url : data.url,
+            preview: true
+            }
+            dispatch(thunkCreateNewSpotImage(imageData, newSpot));
             return newSpot;
         }
 
@@ -125,17 +127,17 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
 };
 
 //in progress
-export const thunkCreateNewSpotImage = (data, spotId) => async (dispatch) => {
+export const thunkCreateNewSpotImage = (imageInfo, spot) => async (dispatch) => {
     try {
-        const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+        const res = await csrfFetch(`/api/spots/${spot.id}/images`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(imageInfo)
         })
 
         if(res.ok) {
         const image = await res.json();
-            dispatch(actionCreateSpotImage(image));
+            dispatch(thunkGetSingleSpot(spot.id));
             return image;
         }
 
@@ -186,10 +188,6 @@ export default function SpotsReducer (state = intitialState, action) {
         };
         case CREATE_NEW_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
-        }
-        //in progress
-        case CREATE_SPOT_IMAGE : {
-            return {...state, singleSpot: action.singleSpot.image}
         }
         case EDIT_EXISTING_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}

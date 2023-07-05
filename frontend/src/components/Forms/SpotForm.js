@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { thunkCreateNewSpot } from '../../store/spotsReducer';
-import { thunkCreateNewSpotImage } from '../../store/spotsReducer';
-
-
 
 //works
 function SpotForm() {
+  let history = useHistory();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [address, setAddress] = useState('');
@@ -17,37 +15,39 @@ function SpotForm() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [lat, setLat] = useState(90);
-  const [lng, setLng] = useState(90);
   const [url, setUrl] = useState('');
+
 
 
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  // let errors = {};
-  // setErrors({});
-  let spot = {address, city, state, country, name, description, price, lat, lng}
-  let image = {url};
-  // if(!address) {errors.address = "Must have a valid address"}
-  // if(!city) {errors.city = "Must have a valid city"}
-  // if(!state) {errors.state = "Must have a valid state"}
-  // if(!country) {errors.country = "Must have a valid country"}
-  // if(!name) {errors.name = "Must have a valid name"}
-  // if(!description){errors.description = "Must have a valid description"}
-  // if(price < 1) {errors.price = "Must have a valid price"}
-  // if(!lat) {errors.latitude = "Must have a valid latitude"}
-  // if(!lng){errors.longitude = "Must have a valid longitude"}
-  // setErrors(errors);
+  let spot = {address, city, state, country, name, description, price, lat : 90, lng : 90, url}
   const submitSpot =  await dispatch(thunkCreateNewSpot(spot));
-  // const submitImage = await dispatch(thunkCreateNewSpotImage(image, submitSpot.id))
-
+  console.log('what is submitspot', submitSpot);
+  if(submitSpot.id){
+    history.push('/spots/current')
+  }
 }
 
+useEffect(()=>{
+  let errors = {};
+  setErrors({});
+  if(!address) {errors.address = "Must have a valid address"}
+  if(!city) {errors.city = "Must have a valid city"}
+  if(!state) {errors.state = "Must have a valid state"}
+  if(!country) {errors.country = "Must have a valid country"}
+  if(!name) {errors.name = "Must have a valid name"}
+  if(!description){errors.description = "Must have a valid description"}
+  if(price < 1) {errors.price = "Must have a valid price"}
+  if(!url) {errors.url = "Must have a valid url"}
+  setErrors(errors);
+},[address, city, state, country, name, description, price, url]);
 
   return (
+<>
     <form>
-      <h2>Create Form</h2>
+      <h2>Create a new spot</h2>
         <label>
         Address:
         <input
@@ -56,7 +56,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setAddress(e.target.value)}
         />
       </label>
-      {/* {errors.address && <div className="errors">{errors.address}</div>} */}
+      {errors.address && <div className="errors">{errors.address}</div>}
       <label>
         City:
         <input
@@ -65,7 +65,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setCity(e.target.value)}
         />
       </label>
-      {/* {errors.city && <div className="errors">{errors.city}</div>} */}
+      {errors.city && <div className="errors">{errors.city}</div>}
       <label>
         State:
         <input
@@ -74,7 +74,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setState(e.target.value)}
         />
       </label>
-      {/* {errors.state && <div className="errors">{errors.state}</div>} */}
+      {errors.state && <div className="errors">{errors.state}</div>}
       <label>
         Country:
         <input
@@ -83,7 +83,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setCountry(e.target.value)}
         />
       </label>
-      {/* {errors.country && <div className="errors">{errors.country}</div>} */}
+      {errors.country && <div className="errors">{errors.country}</div>}
       <label>
         Name:
         <input
@@ -92,7 +92,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setName(e.target.value)}
         />
       </label>
-      {/* {errors.name && <div className="errors">{errors.name}</div>} */}
+      {errors.name && <div className="errors">{errors.name}</div>}
       <label>
         Description:
         <textarea
@@ -100,7 +100,7 @@ const handleSubmit = async (e) => {
           onChange={(e) => setDescription(e.target.value)}
         />
       </label>
-      {/* {errors.description && <div className="errors">{errors.description}</div>} */}
+      {errors.description && <div className="errors">{errors.description}</div>}
       <label>
         Price:
         <input
@@ -109,19 +109,20 @@ const handleSubmit = async (e) => {
           onChange={(e) => setPrice(e.target.value)}
         />
       </label>
-      {/* {errors.price && <div className="errors">{errors.price}</div>} */}
-      {/* url and preview image true/false */}
-      {/* <label>
+      {errors.price && <div className="errors">{errors.price}</div>}
+      <label>
         Image Url:
         <input
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
-      </label> */}
-
-      <button type="submit" onClick={handleSubmit}>Show me the money!</button>
+      </label>
+      {errors.url && <div className="errors">{errors.url}</div>}
+      <button disabled={Object.values(errors).length} type="submit" onClick={handleSubmit}>Show me the money!</button>
     </form>
+
+    </>
   )
 };
 
