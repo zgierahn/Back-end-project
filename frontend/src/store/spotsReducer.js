@@ -68,16 +68,16 @@ export const thunkGetUserSpots = () => async (dispatch) => {
 
 
 export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
-    try {
+    // try {
     const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if(res.ok) {
         const spot = await res.json();
         dispatch(actionGetSingleSpot(spot));
         return spot;
-    }
-    } catch (error) {
-        const err = await error.json();
+    } else {
+    // } catch (error) {
+        const err = await res.json();
         console.log(err);
         return err;
     }
@@ -147,9 +147,9 @@ export const thunkCreateNewSpotImage = (data, spotId) => async (dispatch) => {
 };
 
 
-export const thunkEditSpot = (data) => async (dispatch) => { //removed spotId
+export const thunkEditSpot = (data, spotId) => async (dispatch) => {
     try {
-        const res = await csrfFetch(`/api/spots/${data.id}`, { //had spotId
+        const res = await csrfFetch(`/api/spots/${spotId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

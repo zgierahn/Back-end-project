@@ -120,7 +120,7 @@ export default function ReviewsReducer (state = intitialState, action) {
             console.log('i need to see these two', state, action);
             return {...state, spot: {...action.payload}}
         };
-        // case GET_SINGLE_SPOT :{
+        // case GET_REVIEWS_BY_SPOT :{
         //     return {...state, singleSpot :  action.spot }
         // };
         // case CREATE_NEW_SPOT : {

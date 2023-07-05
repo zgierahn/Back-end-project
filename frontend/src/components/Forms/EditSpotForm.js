@@ -10,8 +10,6 @@ function EditSpotForm({spotObj}) {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   console.log('this is spotObj', spotObj);
-  // let spotObj = useSelector(state=>state.spots.singleSpot);
-  // console.log('what is this', spotObj);
   // const [errors, setErrors] = useState({});
   const [address, setAddress] = useState(spotObj.address); // spotObj.address
   const [city, setCity] = useState(spotObj.city);
@@ -32,8 +30,8 @@ if(!spotId || !Object.values(spotObj).length) return null
 const handleSubmit = async (e) => {
   e.preventDefault();
   //spread spotObj in
-  let spot = {...spotObj, address, city, state, country, name, description, price, lat, lng}
-  const updateSpot =  await dispatch(thunkEditSpot(spot )); //removed spotId
+  let spot = { address, city, state, country, name, description, price, lat, lng}
+  const updateSpot =  await dispatch(thunkEditSpot( spot, spotId )); //removed spotId
   console.log('this the new spot', updateSpot);
 };
 
