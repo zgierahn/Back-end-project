@@ -14,7 +14,7 @@ function SpotsByOwner() {
 
     const spotsObj = useSelector(state => state.spots.allSpots);
     const spotsArray = Object.values(spotsObj);
-    console.log('spotsarray', spotsArray);
+  
 
   return (
     <div>

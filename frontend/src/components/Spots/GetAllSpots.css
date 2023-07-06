@@ -1,0 +1,12 @@
+.card-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.previewImage {
+    object-fit: cover;
+    height: 300px;
+    width: 285px;
+    border-radius: 10px;
+
+}

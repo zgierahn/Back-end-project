@@ -6,7 +6,9 @@ function ReviewModal() {
 const [modal, setModal] = useState(false);
 const [reviewInfo, setReviewInfo] = useState('');
 const [errors, setErrors] = useState({});
-const [stars, setStars] = useState(0)
+const [stars, setStars] = useState(0);
+const [activeRating, setActiveRating] = useState(stars);
+
 
 const toggleReviewButton = () => {
     setModal(!modal)
@@ -45,7 +47,52 @@ setErrors(trackErrors);
                     />
                 </label>
                 {errors.reviewInfo && <div className="errors">{errors.reviewInfo}</div>}
-                <button onClick={()=>{toggleReviewButton()}} className='close-review-modal'>close</button>
+                <div className="star-rating">
+                    <div
+                        className={activeRating >= 1 ? "filled" : "empty"}
+                        onMouseEnter={() => {setActiveRating(1)} }
+                        onMouseLeave={() => {setActiveRating(stars)} }
+                        onClick={() => {setStars(1)} }
+                    >
+                        <i className="fa fa-star"></i>
+                    </div>
+                    <div
+                        className={activeRating >= 2 ? "filled" : "empty"}
+                        onMouseEnter={() => {setActiveRating(2)} }
+                        onMouseLeave={() => {setActiveRating(stars)} }
+                        onClick={() => {setStars(2)} }
+                    >
+                        <i className="fa fa-star"></i>
+                    </div>
+                    <div
+                        className={activeRating >= 3 ? "filled" : "empty"}
+                        onMouseEnter={() => {setActiveRating(3)} }
+                        onMouseLeave={() => {setActiveRating(stars)} }
+                        onClick={() => {setStars(3)} }
+                    >
+                        <i className="fa fa-star"></i>
+                    </div>
+                    <div
+                        className={activeRating >= 4 ? "filled" : "empty"}
+                        onMouseEnter={() => {setActiveRating(4)} }
+                        onMouseLeave={() => {setActiveRating(stars)} }
+                        onClick={() => {setStars(4)} }
+                    >
+                        <i className="fa fa-star"></i>
+                    </div>
+                    <div
+                        className={activeRating >= 5 ? "filled" : "empty"}
+                        onMouseEnter={() => {setActiveRating(5)} }
+                        onMouseLeave={() => {setActiveRating(stars)} }
+                        onClick={() => {setStars(5)} }
+                    >
+                        <i className="fa fa-star"></i>
+                    </div>
+
+                </div>
+                {errors.stars && <div className="errors">{errors.stars}</div>}
+                <button  className='submit-review-button'>Submit</button>
+                <button onClick={()=>{toggleReviewButton()}} className='close-review-modal'>Cancel</button>
             </div>
 
             </div>
