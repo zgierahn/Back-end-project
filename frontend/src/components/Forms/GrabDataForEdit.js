@@ -11,14 +11,14 @@ const { spotId } = useParams();
 
 
 useEffect(()=> {
+  dispatch(thunkGetSingleSpot(spotId))
 
-        dispatch(thunkGetSingleSpot(spotId))
-    }, [dispatch]);
+}, [dispatch, spotId]);
 
 
-    let spotObj = useSelector(state=>state.spots.singleSpot);
+let spotObj = useSelector(state => state.spots.singleSpot);
     console.log('test', spotObj);
-    console.log('grabdataforedit rendered');
+    console.log('grab data for edit rendered');
 
 if(!spotId || !Object.values(spotObj).length) return null
 

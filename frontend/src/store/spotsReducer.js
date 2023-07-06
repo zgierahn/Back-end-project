@@ -184,6 +184,8 @@ export default function SpotsReducer (state = intitialState, action) {
             return {...state, allSpots: {...action.payload.Spots}}
         };
         case GET_SINGLE_SPOT :{
+            let newState = {...state};
+            console.log('this is newstate', newState);
             return {...state, singleSpot :  action.spot }
         };
         case CREATE_NEW_SPOT : {

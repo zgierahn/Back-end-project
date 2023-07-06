@@ -25,10 +25,6 @@ console.log('get all spots rendered');
                      <p key={spot.city}>{spot.city}</p>
                      <p key={spot.state}>{spot.state}</p>
                      <p>Price: {spot.price}</p>
-                 <button key={spot.id} onClick={(e)=>{
-                        e.preventDefault();
-                        return dispatch(thunkDeleteSpot(spot.id))
-                    }}>delete</button>
                  </div>)
             })}
         </div>

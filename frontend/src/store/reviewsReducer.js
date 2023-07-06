@@ -2,42 +2,36 @@ import { csrfFetch } from "./csrf";
 
 //types
 const GET_REVIEWS_BY_SPOT = 'reviews/GetReviewsBySpotId';
-// const GET_SINGLE_SPOT = 'spots/GetSingleSpot';
-// const EDIT_EXISTING_SPOT = 'spots/EditExistingSpot';
-// const CREATE_NEW_SPOT = 'spots/CreateNewSpot';
+const EDIT_EXISTING_REVIEW = 'reviews/EditReviewById';
+const CREATE_REVIEW = 'reviews/CreateNewReview';
 const DELETE_REVIEW = 'reviews/DeleteReview';
-// const CREATE_SPOT_IMAGE = 'spots/CreateImage';
+const CREATE_REVIEW_IMAGE = 'reviews/CreateImage';
 
 //action functions
-export const actionGetReviews = (reviews) => ({
+export const actionGetReviews = (spotId) => ({
     type: GET_REVIEWS_BY_SPOT,
-    reviews
+    spotId
 });
 
-// export const actionGetSingleSpot = (spot) => ({
-//     type: GET_SINGLE_SPOT,
-//     spot
-// });
+export const actionEditReview = (reviewId) => ({
+    type: EDIT_EXISTING_REVIEW,
+    reviewId
+});
 
-// export const actionEditSpot = (spot) => ({
-//     type: EDIT_EXISTING_SPOT,
-//     spot
-// });
-
-// export const actionCreateSpot = (spot) => ({
-//     type: CREATE_NEW_SPOT,
-//     spot
-// });
+export const actionCreateReview = (data) => ({
+    type: CREATE_REVIEW,
+    data
+});
 
 export const actionDeleteReview = (reviewId) => ({
     type: DELETE_REVIEW,
     reviewId
 });
 
-// export const actionCreateSpotImage = (image) => ({
-//     type: CREATE_SPOT_IMAGE,
-//     image
-// });
+export const actionCreateReviewImage = (image) => ({
+    type: CREATE_REVIEW_IMAGE,
+    image
+});
 
 
 //thunk funcs
@@ -53,16 +47,16 @@ export const thunkGetUserReviews = () => async (dispatch) => {
     }
 }
 
-// export const thunkGetReviewsBySpot = () => async (dispatch) => {
-//     const res = await fetch('/api/spots');
+export const thunkGetReviewsBySpot = (spotId) => async (dispatch) => {
+    const res = await fetch('/api/spots/"spotid"/reviews'); //fix fetch url
 
-//     if(res.ok) {
-//         const response = await res.json();
-//         dispatch(actionGetSpots(response));
+    if(res.ok) {
+        const response = await res.json();
+        dispatch(actionGetReviews(spotId));
 
-//         return response;
-//     }
-// }
+        return response;
+    }
+}
 
 
 export const thunkDeleteSpot = (reviewId) => async (dispatch) => {
@@ -84,26 +78,26 @@ export const thunkDeleteSpot = (reviewId) => async (dispatch) => {
 };
 
 
-// export const thunkCreateNewSpot = (data) => async (dispatch) => {
-//     try {
-//         const res = await csrfFetch('/api/spots', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(data)
-//         })
+export const thunkCreateReviewImage = (data) => async (dispatch) => {
+    try {
+        const res = await csrfFetch('/api/reviews/:reviewId/images', { //fix fetch url
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
 
-//         if(res.ok) {
-//         const newSpot = await res.json();
-//             dispatch(actionCreateSpot(newSpot));
-//             return newSpot;
-//         }
+        if(res.ok) {
+        const newImage = await res.json();
+            dispatch(actionCreateReviewImage(newImage));
+            return newImage;
+        }
 
-//     } catch (error) {
-//         const err = await error.json();
-//         console.log(err);
-//         return err;
-//     }
-// };
+    } catch (error) {
+        const err = await error.json();
+        console.log(err);
+        return err;
+    }
+};
 
 
 const intitialState = {
