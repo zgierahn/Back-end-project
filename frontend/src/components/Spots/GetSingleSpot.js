@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
+import { thunkCreateReview } from '../../store/reviewsReducer';
+import ReviewModal from '../Modal/ReviewModal';
 
 //works
 export default function GetSingleSpot() {
@@ -23,11 +25,17 @@ let url = imgArray[0].url;
 console.log('this is the url', url);
 console.log('img array', imgArray);
 
+const onSubmit = async () => {
+let ghetto = {review : 'This is a ghettttooo review', stars: 5, spotId}
+  await dispatch(thunkCreateReview(ghetto, spotId));
+
+}
     return (
         <div>
             <h1>{spotsObj.name}</h1>
             <span><p>{spotsObj.city}, {spotsObj.state}, {spotsObj.country}</p></span>
             <img className= 'previewImage' src={url ? url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+            <ReviewModal />
         </div>
   )
 };

@@ -48,7 +48,7 @@ export const thunkGetUserReviews = () => async (dispatch) => {
 }
 
 export const thunkGetReviewsBySpot = (spotId) => async (dispatch) => {
-    const res = await fetch('/api/spots/"spotid"/reviews'); //fix fetch url
+    const res = await fetch(`/api/spots/${spotId}/reviews`);
 
     if(res.ok) {
         const response = await res.json();
@@ -78,9 +78,34 @@ export const thunkDeleteSpot = (reviewId) => async (dispatch) => {
 };
 
 
+export const thunkCreateReview = (data, spotId) => async (dispatch) => {
+    try {
+        console.log('what is the data coming into createREVIEwTHUNK', data);
+        const res = await csrfFetch(`/api/spots/${spotId}/reviews`,  //fix spot ID
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+
+        if(res.ok) {
+        const review = await res.json();
+            dispatch(actionCreateReview(review));
+            return review;
+        }
+
+    } catch (error) {
+        const err = await error.json();
+        console.log(err);
+        return err;
+    }
+};
+
+
 export const thunkCreateReviewImage = (data) => async (dispatch) => {
     try {
-        const res = await csrfFetch('/api/reviews/:reviewId/images', { //fix fetch url
+        console.log('what is the data coming into createREVIEwIMAGE', data);
+        const res = await csrfFetch(`/api/reviews/${data.id}/images`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -115,9 +140,9 @@ export default function ReviewsReducer (state = intitialState, action) {
             console.log('i need to see these two', state, action);
             return {...state, spot: {[action.reviews.id] : action.reviews}}
         };
-        // case CREATE_NEW_SPOT : {
-        //     return {...state, singleSpot: { [action.spot.id] : action.spot}}
-        // }
+        case CREATE_REVIEW : {
+            return {...state, spot : { [action.reviews.id] : action.reviews } }
+        }
         // //in progress
         // case CREATE_SPOT_IMAGE : {
         //     return {...state, singleSpot: action.singleSpot.image}
@@ -128,7 +153,7 @@ export default function ReviewsReducer (state = intitialState, action) {
 
         case DELETE_REVIEW : {
             const  newState = {...state}
-            delete newState.spot.reviews[action.reviews.id]
+            delete newState.reviews.spot[action.reviews.id]
             return newState
         }
         default:
