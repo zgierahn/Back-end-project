@@ -59,7 +59,7 @@ export const thunkGetReviewsBySpot = (spotId) => async (dispatch) => {
 }
 
 
-export const thunkDeleteSpot = (reviewId) => async (dispatch) => {
+export const thunkDeleteReview = (reviewId) => async (dispatch) => {
     try {
     const res = await csrfFetch(`/api/reviews/${reviewId}`,{
         method: 'DELETE'

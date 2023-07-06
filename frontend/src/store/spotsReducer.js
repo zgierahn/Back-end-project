@@ -109,8 +109,7 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
 
         if(res.ok) {
         const newSpot = await res.json();
-        console.log('in thunk create spot - data', data);
-        console.log('in thunk create spot - newspot', newSpot);
+
             const imageData =
             {url : data.url,
             preview: true
@@ -126,7 +125,7 @@ export const thunkCreateNewSpot = (data) => async (dispatch) => {
     }
 };
 
-//in progress
+
 export const thunkCreateNewSpotImage = (imageInfo, spot) => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/${spot.id}/images`, {
@@ -190,16 +189,15 @@ export default function SpotsReducer (state = intitialState, action) {
         };
         case CREATE_NEW_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
-        }
+        };
         case EDIT_EXISTING_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
-        }
-
+        };
         case DELETE_SPOT : {
             const  newState = {...state}
             delete newState.allSpots[action.spotId]
             return newState
-        }
+        };
         default:
              return state
     }

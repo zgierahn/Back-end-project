@@ -29,6 +29,7 @@ body.active-modal {
     position: absolute;
     top: 40%;
     left: 50%;
+    height: 250px;
     transform: translate(-50%, -50%);
     line-height: 1.4;
     background: #f1f1f1;
