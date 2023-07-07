@@ -22,14 +22,8 @@ if(!Object.values(spotsObj).length) { return null }
 
 let imgArray = Object.values(spotsObj.SpotImages);
 let url = imgArray[0].url;
-console.log('this is the url', url);
-console.log('img array', imgArray);
 
-const onSubmit = async () => {
-let ghetto = {review : 'This is a ghettttooo review', stars: 5, spotId}
-  await dispatch(thunkCreateReview(ghetto, spotId));
 
-}
     return (
         <div>
             <h1>{spotsObj.name}</h1>

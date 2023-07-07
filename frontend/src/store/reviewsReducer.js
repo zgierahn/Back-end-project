@@ -80,8 +80,7 @@ export const thunkDeleteReview = (reviewId) => async (dispatch) => {
 
 export const thunkCreateReview = (data, spotId) => async (dispatch) => {
     try {
-        console.log('what is the data coming into createREVIEwTHUNK', data);
-        const res = await csrfFetch(`/api/spots/${spotId}/reviews`,  //fix spot ID
+        const res = await csrfFetch(`/api/spots/${spotId}/reviews`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -136,27 +135,52 @@ const intitialState = {
 export default function ReviewsReducer (state = intitialState, action) {
     switch(action.type) {
         case GET_REVIEWS_BY_SPOT :{
-            console.log('===============================================');
-            console.log('i need to see these two', state, action);
-            return {...state, spot: {[action.reviews.id] : action.reviews}}
+            const newState = {...state, spot : {...state.spot}};
+            newState.spot = {};
+            action.spot.Reviews.forEach(review => {
+                newState.spot[review.id] = review
+            });
+            return newState;
         };
         case CREATE_REVIEW : {
-            return {...state, spot : { [action.reviews.id] : action.reviews } }
+            const newState = {...state, spot : {...state.spot}};
+            newState.spot[action.review.id] = action.review
+            return newState;
         }
+
         // //in progress
-        // case CREATE_SPOT_IMAGE : {
-        //     return {...state, singleSpot: action.singleSpot.image}
+        // case CREATE_REVIEW_IMAGE : {
+        //     return {...state, spot: action.singleSpot.image}
         // }
-        // case EDIT_EXISTING_SPOT : {
-        //     return {...state, singleSpot: { [action.spot.id] : action.spot}}
+        // case EDIT_EXISTING_REVIEW : {
+        //     return {...state, spot: { [action.spot.id] : action.spot}}
         // }
 
         case DELETE_REVIEW : {
-            const  newState = {...state}
-            delete newState.reviews.spot[action.reviews.id]
+            const  newState = {...state, spot : {...state.spot}}
+            delete newState.spot[action.id]
             return newState
         }
         default:
              return state
     }
 };
+
+
+//notes
+
+// return {...state, allSpots: {...action.payload.Spots}}
+
+// const newState = {...state, spot:{...state.spot}}
+//             newState.spot[action.review.id] = action.review
+//             return newState
+
+// let createReviewButton = false
+//     reviewArr.map((review)=> {
+//         return (
+//             !user.user || review.userId === user.user.id || user.user.id === spot.ownerId  ? createReviewButton = false : createReviewButton= true
+//         )
+//     })
+
+
+{/* <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3> */}

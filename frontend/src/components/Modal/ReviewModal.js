@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { thunkCreateReview } from '../../store/reviewsReducer';
 import "./ReviewModal.css";
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 
 function ReviewModal() {
+const { spotId } = useParams();
+const dispatch = useDispatch();
 const [modal, setModal] = useState(false);
 const [reviewInfo, setReviewInfo] = useState('');
 const [errors, setErrors] = useState({});
@@ -26,6 +31,11 @@ setErrors(trackErrors);
 
 }, [reviewInfo, stars])
 
+const submitReview = async () => {
+    let review = { reviewInfo, stars, spotId }
+      await dispatch(thunkCreateReview(review, spotId));
+
+    }
 
   return (
         <div>
@@ -91,7 +101,7 @@ setErrors(trackErrors);
 
                 </div>
                 {errors.stars && <div className="errors">{errors.stars}</div>}
-                <button  className='submit-review-button'>Submit</button>
+                <button  className='submit-review-button'>Submit Review</button>
                 <button onClick={()=>{toggleReviewButton()}} className='close-review-modal'>Cancel</button>
             </div>
 
