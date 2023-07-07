@@ -37,8 +37,12 @@ const sessionUser = useSelector(state=>state.session.user);
 
 const submitReview = async () => {
     let reviewSubmission = { review, stars }
-      await dispatch(thunkCreateReview(reviewSubmission, sessionUser, spotId));
-
+      const response = await dispatch(thunkCreateReview(reviewSubmission, sessionUser, spotId));
+    if(response.id) {
+        setStars(0);
+        setReview('');
+       return toggleReviewButton()
+    }
     }
 
   return (

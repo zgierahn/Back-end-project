@@ -152,7 +152,6 @@ export default function ReviewsReducer (state = intitialState, action) {
             newState.spot[action.review.id] = action.review;
             return newState;
         }
-
         // //in progress
         // case CREATE_REVIEW_IMAGE : {
         //     return {...state, spot: action.singleSpot.image}
@@ -160,7 +159,6 @@ export default function ReviewsReducer (state = intitialState, action) {
         // case EDIT_EXISTING_REVIEW : {
         //     return {...state, spot: { [action.spot.id] : action.spot}}
         // }
-
         case DELETE_REVIEW : {
             const  newState = {...state, spot : {...state.spot}}
             delete newState.spot[action.reviewId]

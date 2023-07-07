@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { thunkCreateNewSpot } from '../../store/spotsReducer';
 
-//works
+
 function SpotForm() {
   let history = useHistory();
   const dispatch = useDispatch();
@@ -24,7 +24,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   let spot = {address, city, state, country, name, description, price, lat : 90, lng : 90, url}
   const submitSpot =  await dispatch(thunkCreateNewSpot(spot));
-  console.log('what is submitspot', submitSpot);
   if(submitSpot.id){
     history.push('/spots/current')
   }

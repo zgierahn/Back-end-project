@@ -49,6 +49,7 @@ let url = imgArray[0].url;
                 <button
                     onClick={()=>{dispatch(thunkDeleteReview(review.id))}}
                      >Delete Review</button>
+                     <button>Add Review Image</button>
             </div>
         )})}
         <div>
