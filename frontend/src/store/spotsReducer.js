@@ -88,7 +88,7 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
 
     if(res.ok) {
         const spot = await res.json();
-        dispatch(actionDeleteSpot(spot));
+        dispatch(actionDeleteSpot(spotId));
         return spot;
     }
     } catch (error) {
@@ -180,21 +180,24 @@ const intitialState = {
 export default function SpotsReducer (state = intitialState, action) {
     switch(action.type) {
         case GET_ALL_SPOTS :{
-            return {...state, allSpots: {...action.payload.Spots}}
+            let spotsObj = {};
+            action.payload.Spots.forEach(spot => {
+                spotsObj[spot.id] = spot
+            });
+            return {...state, allSpots: {...spotsObj}}
         };
         case GET_SINGLE_SPOT :{
-            let newState = {...state};
-            console.log('this is newstate', newState);
-            return {...state, singleSpot :  action.spot }
+            return {...state, singleSpot :  action.spot }  //this single spot is accurate
         };
         case CREATE_NEW_SPOT : {
-            return {...state, singleSpot: { [action.spot.id] : action.spot}}
+            return {...state, singleSpot: { [action.spot.id] : action.spot}} //singleSpot should only be set to the spot object, not the ID => action.spot
         };
         case EDIT_EXISTING_SPOT : {
             return {...state, singleSpot: { [action.spot.id] : action.spot}}
         };
         case DELETE_SPOT : {
-            const  newState = {...state}
+
+            const  newState = {...state, allSpots: {...state.allSpots}}
             delete newState.allSpots[action.spotId]
             return newState
         };
