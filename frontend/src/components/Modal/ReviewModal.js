@@ -9,7 +9,7 @@ function ReviewModal() {
 const { spotId } = useParams();
 const dispatch = useDispatch();
 const [modal, setModal] = useState(false);
-const [reviewInfo, setReviewInfo] = useState('');
+const [review, setReview] = useState('');
 const [errors, setErrors] = useState({});
 const [stars, setStars] = useState(0);
 const [activeRating, setActiveRating] = useState(stars);
@@ -25,15 +25,15 @@ if(!modal) document.body.classList.remove('active-modl')
 useEffect(() => {
 let trackErrors = {};
 setErrors({});
-if(reviewInfo.length < 10) trackErrors.reviewInfo = 'Must leave a comment of 10 characters or more'
+if(review.length < 10) trackErrors.review = 'Must leave a comment of 10 characters or more'
 if(!stars) trackErrors.stars = 'Must rate this review';
 setErrors(trackErrors);
 
-}, [reviewInfo, stars])
+}, [review, stars])
 
 const submitReview = async () => {
-    let review = { reviewInfo, stars, spotId }
-      await dispatch(thunkCreateReview(review, spotId));
+    let reviewSubmission = { review, stars }
+      await dispatch(thunkCreateReview(reviewSubmission, spotId));
 
     }
 
@@ -52,11 +52,11 @@ const submitReview = async () => {
                 <label>
                     Description:
                     <textarea
-                    value={reviewInfo}
-                    onChange={(e) => setReviewInfo(e.target.value)}
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
                     />
                 </label>
-                {errors.reviewInfo && <div className="errors">{errors.reviewInfo}</div>}
+                {errors.review && <div className="errors">{errors.review}</div>}
                 <div className="star-rating">
                     <div
                         className={activeRating >= 1 ? "filled" : "empty"}
@@ -101,7 +101,10 @@ const submitReview = async () => {
 
                 </div>
                 {errors.stars && <div className="errors">{errors.stars}</div>}
-                <button  className='submit-review-button'>Submit Review</button>
+                <button
+                    className='submit-review-button'
+                    onClick={()=>{submitReview()}}
+                    >Submit Review</button>
                 <button onClick={()=>{toggleReviewButton()}} className='close-review-modal'>Cancel</button>
             </div>
 

@@ -8,9 +8,9 @@ const DELETE_REVIEW = 'reviews/DeleteReview';
 const CREATE_REVIEW_IMAGE = 'reviews/CreateImage';
 
 //action functions
-export const actionGetReviews = (spotId) => ({
+export const actionGetReviews = (data) => ({
     type: GET_REVIEWS_BY_SPOT,
-    spotId
+    data
 });
 
 export const actionEditReview = (reviewId) => ({
@@ -18,9 +18,9 @@ export const actionEditReview = (reviewId) => ({
     reviewId
 });
 
-export const actionCreateReview = (data) => ({
+export const actionCreateReview = (review) => ({
     type: CREATE_REVIEW,
-    data
+    review
 });
 
 export const actionDeleteReview = (reviewId) => ({
@@ -48,14 +48,19 @@ export const thunkGetUserReviews = () => async (dispatch) => {
 }
 
 export const thunkGetReviewsBySpot = (spotId) => async (dispatch) => {
-    const res = await fetch(`/api/spots/${spotId}/reviews`);
-
+try {
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
     if(res.ok) {
         const response = await res.json();
-        dispatch(actionGetReviews(spotId));
-
+        dispatch(actionGetReviews(response));
         return response;
     }
+} catch (error) {
+    const err = await error.json();
+        console.log(err);
+        return err;
+    }
+
 }
 
 
@@ -95,7 +100,6 @@ export const thunkCreateReview = (data, spotId) => async (dispatch) => {
 
     } catch (error) {
         const err = await error.json();
-        console.log(err);
         return err;
     }
 };
@@ -137,14 +141,15 @@ export default function ReviewsReducer (state = intitialState, action) {
         case GET_REVIEWS_BY_SPOT :{
             const newState = {...state, spot : {...state.spot}};
             newState.spot = {};
-            action.spot.Reviews.forEach(review => {
+            action.data.Reviews.forEach(review => {
                 newState.spot[review.id] = review
             });
             return newState;
         };
         case CREATE_REVIEW : {
-            const newState = {...state, spot : {...state.spot}};
-            newState.spot[action.review.id] = action.review
+            const newState = {...state, spot : {...state.spot} };
+            newState.spot[action.review.id] = action.review;
+            console.log('newstate', newState);
             return newState;
         }
 

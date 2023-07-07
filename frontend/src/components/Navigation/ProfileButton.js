@@ -4,8 +4,10 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import { useHistory } from "react-router-dom";
 
 function ProfileButton({ user }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -51,6 +53,9 @@ function ProfileButton({ user }) {
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
+              <button onClick={()=>{history.push('/spots/current')}}>Manage Spots</button>
+            </li>
+            <li>
               <button onClick={logout}>Log Out</button>
             </li>
           </>
@@ -74,3 +79,12 @@ function ProfileButton({ user }) {
 }
 
 export default ProfileButton;
+
+
+//secret user/password combos sssshhhhh
+
+// logins= {
+//   'Demo-lition': 'password',
+//   'FakeUser1' : 'password2',
+//   'FakeUser2' : 'password3'
+// }
