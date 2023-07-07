@@ -29,9 +29,8 @@ if(!spotId || !Object.values(spotObj).length) return null
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  //spread spotObj in
   let spot = { address, city, state, country, name, description, price, lat, lng}
-  const updateSpot =  await dispatch(thunkEditSpot( spot, spotId )); //removed spotId
+  const updateSpot =  await dispatch(thunkEditSpot( spot, spotId ));
   console.log('this the new spot', updateSpot);
 };
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
-import { thunkGetReviewsBySpot } from '../../store/reviewsReducer';
+import { thunkDeleteReview, thunkGetReviewsBySpot } from '../../store/reviewsReducer';
 import ReviewModal from '../Modal/ReviewModal';
 
 //works
@@ -21,6 +21,8 @@ useEffect(() => {
 
 const spotsObj = useSelector(state => state.spots.singleSpot);
 const reviewsObj = useSelector(state=>state.reviews.spot);
+
+
 const reviewsArray = Object.values(reviewsObj);
 console.log('reviews array', reviewsObj);
 
@@ -40,11 +42,13 @@ let url = imgArray[0].url;
             <ReviewModal />
         </div>
         {reviewsArray.map(review=>{
-            return (<div className='reviews-container'>
+            return (<div key={review.id} className='reviews-container'>
                 <p>{review.User.firstName !== undefined ? review.User.firstName : ''}</p>
                 <p>{review.createdAt !== undefined  ? review.createdAt : ''}</p>
                 <p>{review.review !== undefined ? review.review : ''}</p>
-                <button >Delete Review</button>
+                <button
+                    onClick={()=>{dispatch(thunkDeleteReview(review.id))}}
+                     >Delete Review</button>
             </div>
         )})}
         <div>

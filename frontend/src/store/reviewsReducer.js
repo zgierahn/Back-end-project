@@ -83,7 +83,7 @@ export const thunkDeleteReview = (reviewId) => async (dispatch) => {
 };
 
 
-export const thunkCreateReview = (data, spotId) => async (dispatch) => {
+export const thunkCreateReview = (data, user, spotId) => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/${spotId}/reviews`,
          {
@@ -94,6 +94,7 @@ export const thunkCreateReview = (data, spotId) => async (dispatch) => {
 
         if(res.ok) {
         const review = await res.json();
+            review.User = user
             dispatch(actionCreateReview(review));
             return review;
         }
@@ -163,7 +164,7 @@ export default function ReviewsReducer (state = intitialState, action) {
 
         case DELETE_REVIEW : {
             const  newState = {...state, spot : {...state.spot}}
-            delete newState.spot[action.id]
+            delete newState.spot[action.reviewId]
             return newState
         }
         default:

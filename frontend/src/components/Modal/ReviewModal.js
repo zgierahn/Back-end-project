@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { thunkCreateReview } from '../../store/reviewsReducer';
 import "./ReviewModal.css";
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function ReviewModal() {
+
 const { spotId } = useParams();
 const dispatch = useDispatch();
 const [modal, setModal] = useState(false);
@@ -29,11 +30,14 @@ if(review.length < 10) trackErrors.review = 'Must leave a comment of 10 characte
 if(!stars) trackErrors.stars = 'Must rate this review';
 setErrors(trackErrors);
 
-}, [review, stars])
+}, [review, stars]);
+
+const sessionUser = useSelector(state=>state.session.user);
+
 
 const submitReview = async () => {
     let reviewSubmission = { review, stars }
-      await dispatch(thunkCreateReview(reviewSubmission, spotId));
+      await dispatch(thunkCreateReview(reviewSubmission, sessionUser, spotId));
 
     }
 
