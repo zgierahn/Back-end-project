@@ -44,6 +44,7 @@ function ProfileButton({ user }) {
   return (
     <nav>
       <button onClick={openMenu}>
+        <i class="fa fa-bars"></i>
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
@@ -79,7 +80,7 @@ function ProfileButton({ user }) {
 }
 
 export default ProfileButton;
-
+{/* <i class="fa fa-bars"></i> */}
 
 //secret user/password combos sssshhhhh
 

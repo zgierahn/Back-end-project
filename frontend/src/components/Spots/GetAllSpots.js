@@ -22,14 +22,16 @@ console.log('get all spots rendered');
         <div>
             {spotsArray.map(spot =>{
                  return (
-                 <div
+                 <div key={spot.id}
                     className='card-container'
                     onClick={()=>{history.push(`/spots/${spot.id}`)}}
                  >
+                    <span className='tooltiptext'>{spot.name}</span>
                     <img className= 'previewImage' src={spot.previewImage ? spot.previewImage : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
-                     <p key={spot.city}>{spot.city}</p>
-                     <p key={spot.state}>{spot.state}</p>
+                     <p>{spot.city}</p>
+                     <p>{spot.state}</p>
                      <p>Price: {spot.price}</p>
+
                  </div>)
             })}
         </div>
@@ -38,3 +40,4 @@ console.log('get all spots rendered');
 
 
 {/* <i class="fa-regular fa-star"></i> */}
+// xmlns="http://www.w3.org/2000/svg"

@@ -11,10 +11,12 @@ function Navigation({ isLoaded }){
   return (
     <header className='header-container'>
 
-        <div className='nav-logo'>
+        <div>
           <NavLink exact to="/">
+            <div className='nav-logo'>
               <img className='home-logo' src='https://media.istockphoto.com/id/690555566/photo/letter-z-neon-light-full-isolated-on-black.jpg?s=170667a&w=0&k=20&c=Nid0DdAAgQgqRXhr53k_tClVbE05lfX_UQvLxVLWyP4=' />
-              <h1>Zach's BnB</h1>
+              <h1 id='zach-main' >Zach's BnB</h1>
+            </div>
           </NavLink>
         </div>
         {isLoaded && (

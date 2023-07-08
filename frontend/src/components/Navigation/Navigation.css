@@ -13,6 +13,24 @@
 }
 
 .home-logo {
-    height: 40px;
+    align-self: center;
+    height: 30px;
     width: auto;
+}
+
+.nav-logo {
+
+    display: flex;
+    gap: 10px;
+}
+
+#zach-main {
+    font-size: larger;
+
+}
+
+
+.header-right-side {
+    display: flex;
+    justify-content: space-between;
 }

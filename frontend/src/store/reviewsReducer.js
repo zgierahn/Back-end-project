@@ -172,7 +172,6 @@ export default function ReviewsReducer (state = intitialState, action) {
 
 //notes
 
-// return {...state, allSpots: {...action.payload.Spots}}
 
 // const newState = {...state, spot:{...state.spot}}
 //             newState.spot[action.review.id] = action.review
