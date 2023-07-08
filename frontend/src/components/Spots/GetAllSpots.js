@@ -19,22 +19,27 @@ console.log('spotsarray', spotsArray);
 console.log('get all spots rendered');
 
     return (
-        <div>
+        <main className='main-body-container'>
             {spotsArray.map(spot =>{
                  return (
-                 <div key={spot.id}
-                    className='card-container'
-                    onClick={()=>{history.push(`/spots/${spot.id}`)}}
-                 >
+                     <div key={spot.id}
+                     className='card-container tooltip'
+                     onClick={()=>{history.push(`/spots/${spot.id}`)}}
+                     >
                     <span className='tooltiptext'>{spot.name}</span>
                     <img className= 'previewImage' src={spot.previewImage ? spot.previewImage : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
-                     <p>{spot.city}</p>
-                     <p>{spot.state}</p>
-                     <p>Price: {spot.price}</p>
+                    <span className='location-rating-span'>
+                        <p className='city-state'>{spot.city}, {spot.state}</p>
+                        <p className='avg-rating-main'>
+                            <i className="fa fa-star"></i>
+                            {spot.avgRating.toFixed(1)}
+                        </p>
+                    </span>
+                     <p>${spot.price} night</p>
 
                  </div>)
             })}
-        </div>
+        </main>
   )
 };
 
