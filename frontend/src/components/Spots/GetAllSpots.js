@@ -23,10 +23,11 @@ console.log('get all spots rendered');
             {spotsArray.map(spot =>{
                  return (
                      <div key={spot.id}
-                     className='card-container tooltip'
+                     className='card-container'
                      onClick={()=>{history.push(`/spots/${spot.id}`)}}
+                     data-tooltip={spot.name}
                      >
-                    <span className='tooltiptext'>{spot.name}</span>
+                    {/* <span className='tooltiptext'>{spot.name}</span> */}
                     <img className= 'previewImage' src={spot.previewImage ? spot.previewImage : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
                     <span className='location-rating-span'>
                         <p className='city-state'>{spot.city}, {spot.state}</p>
