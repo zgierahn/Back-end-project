@@ -42,12 +42,13 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div className="sign-up-container">
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form className='sign-up-form' onSubmit={handleSubmit}>
         <label>
           Email
           <input
+            // size='30'
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -109,7 +110,7 @@ function SignupFormModal() {
         )}
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

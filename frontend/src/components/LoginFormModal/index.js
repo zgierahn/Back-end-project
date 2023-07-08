@@ -24,10 +24,14 @@ function LoginFormModal() {
       });
   };
 
+
+
   return (
-    <>
+    <div className="login-main-container">
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form
+        className="loging-form-container"
+        onSubmit={handleSubmit}>
         <label>
           Username or Email
           <input
@@ -49,10 +53,23 @@ function LoginFormModal() {
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <div className="form-login-button">
+          <button
+          type="submit">Log In</button>
+        </div>
       </form>
-    </>
+        <button onClick={()=>{return dispatch(sessionActions.login(
+              { credential : 'Demo-lition', password: 'password' }))
+              .then(closeModal)}}
+        >Log in as Demo User</button>
+    </div>
   );
 }
 
 export default LoginFormModal;
+
+// logins= {
+//   'Demo-lition': 'password',
+//   'FakeUser1' : 'password2',
+//   'FakeUser2' : 'password3'
+// }
