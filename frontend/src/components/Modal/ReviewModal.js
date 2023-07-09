@@ -50,20 +50,20 @@ const submitReview = async () => {
 
             <button className='review-button'
             onClick={()=>{toggleReviewButton()}}
-            >Create Review</button>
+            >Post Your Review</button>
 
         {modal && (
             <div className='review-modal'>
             <div className='overlay'></div>
             <div className='review-content'>
                 <h2>How was your Stay?</h2>
-                <label>
+                <label className='movethedescriptionlabel'>
                     Description:
-                    <textarea
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                    />
                 </label>
+                <textarea
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                />
                 {errors.review && <div className="errors">{errors.review}</div>}
                 <div className="star-rating">
                     <div

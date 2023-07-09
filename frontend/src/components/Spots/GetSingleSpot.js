@@ -5,6 +5,7 @@ import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
 import { thunkDeleteReview, thunkGetReviewsBySpot } from '../../store/reviewsReducer';
 import ReviewModal from '../Modal/ReviewModal';
+import ReserveModal from '../Modal/ReserveModal';
 import './GetSingleSpot.css';
 
 //works
@@ -25,7 +26,8 @@ const reviewsObj = useSelector(state=>state.reviews.spot);
 
 
 const reviewsArray = Object.values(reviewsObj);
-console.log('spots object', spotsObj);
+console.log('reviws array', reviewsArray);
+console.log('test test', reviewsArray[0].createdAt.split('-'));
 
 if(!Object.values(spotsObj).length) { return null }
 
@@ -33,6 +35,7 @@ let imgArray = Object.values(spotsObj.SpotImages);
 console.log('what does this look like', imgArray);
 
 
+const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
 
     return (
         <div>
@@ -61,24 +64,32 @@ console.log('what does this look like', imgArray);
                             {spotsObj.avgRating ? spotsObj.avgRating.toFixed(1) : 'New'}
                         </div>
                     </div>
-                    <button>Reserve</button>
+                    <button className="single-spot-reserve-button" onClick={()=>{alert("Feature Coming Soon")}}>Reserve</button>
                 </div>
             </div>
+        </div>
+        <hr></hr>
+        <div className='single-spot-reviews-container'>
+            <span className='h3-reviews-span'>
+            <h3>
+                <i className="fa fa-star"></i>
+                {spotsObj.avgRating ? spotsObj.avgRating.toFixed(1) : 'New'}
+            </h3>
+            {!!reviewsArray.length && <h3 className='thisperiod'>.</h3>}
+            {reviewsArray.length >= 1 && <h3>{reviewsArray.length} {reviewsArray.length === 1 ? "Review" : "Reviews"}</h3>}
+            </span>
             <ReviewModal />
-        </div>
-        {reviewsArray.map(review=>{
-            return (<div key={review.id} className='reviews-container'>
-                <p>{review.User.firstName !== undefined ? review.User.firstName : ''}</p>
-                <p>{review.createdAt !== undefined  ? review.createdAt : ''}</p>
-                <p>{review.review !== undefined ? review.review : ''}</p>
-                <button
+            {reviewsArray.map(review=>{
+                return (<div key={review.id} className='reviews-container'>
+                    <p>{review.User.firstName !== undefined ? review.User.firstName : ''}</p>
+                    <p>{month[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
+                    <p>{review.review !== undefined ? review.review : ''}</p>
+                    <button
                     onClick={()=>{dispatch(thunkDeleteReview(review.id))}}
-                     >Delete Review</button>
-                     <button>Add Review Image</button>
+                    >Delete Review</button>
+                    <button>Add Review Image</button>
+                </div>
+            )})}
             </div>
-        )})}
-        <div>
         </div>
-        </div>
-  )
-};
+)};

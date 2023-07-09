@@ -101,6 +101,7 @@ return (
             {errors.state && <div className="errors">{errors.state}</div>}
           </label>
         </span>
+        {/* <hr></hr> */}
         <label>
           <h3>Describe your place to guests</h3>
           <p>

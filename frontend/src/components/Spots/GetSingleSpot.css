@@ -37,10 +37,10 @@
 .reserve-container {
     display: flex;
     flex-direction: column;
-    border: 2px solid red;
+    border: 2px solid black;
     border-radius: 10px;
     width: 300px;
-    height: 125px;
+    height: 100px;
 }
 
 .price-rating-container {
@@ -48,4 +48,29 @@
     align-content: stretch;
     justify-content: space-evenly;
     align-items: center;
+}
+
+.single-spot-reserve-button {
+    position: relative;
+    bottom: 8px;
+    margin: auto;
+    padding: 5px;
+    width: 250px;
+    font-weight: bold;
+    color: antiquewhite;
+    background-color: rgb(98, 202, 228);
+    border-color: black;
+    box-shadow: 5px 5px 5px black;
+}
+
+
+.h3-reviews-span {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.thisperiod {
+    position: relative;
+    bottom: 4px;
 }
