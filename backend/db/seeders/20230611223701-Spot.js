@@ -125,7 +125,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      address:{ [Op.in]: ['123 Street', '456 Street', '789 Street', '147 Street']}
+      address:{ [Op.in]: ['123 Street', '456 Street', '789 Street', '147 Street', '258 Street', '369 Street', '123 Avenue', '456 Avenue', '789 Avenue']}
     }, {});
   }
 };
