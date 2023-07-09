@@ -1,11 +1,24 @@
-.hidden {
-    display: none
-}
-
 .header-container {
     display: flex;
     justify-content: space-between;
     margin: 25px;
+}
+
+.profile-dropdown {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 48px;
+    border: 1px solid black;
+    margin: 2px;
+    padding: 10px;
+    gap: 4px;
+}
+
+.hidden {
+    display: none;
 }
 
 .profile-button {
@@ -16,6 +29,25 @@
     align-self: center;
     height: 30px;
     width: auto;
+}
+
+.manage-spots-button {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+}
+
+.Manage-spots-div {
+    /* border: 1px solid black; */
+}
+
+.log-out-button {
+    margin-top: 3px;
+    padding: 5px;
+    width: 70px;
+    border-radius: 20px;
 }
 
 .nav-logo {
