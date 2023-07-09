@@ -1,0 +1,61 @@
+.main-spot-form-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* width: 600px; */
+}
+
+.inner-spot-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 450px;
+}
+
+.inner-spot-form-container > label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.city-state-span {
+    display: flex;
+    flex-direction: row;
+}
+
+.create-spot-input {
+    display: flex;
+    width: 450px;
+}
+
+.create-state-input {
+    width: 160px;
+}
+
+.the-comma {
+    position: relative;
+    top: 13px;
+}
+.create-city-input {
+
+    width: 270px;
+}
+
+.create-spot-description-box {
+    display: flex;
+    /* justify-self: center;
+    align-self: center; */
+    height: 125px;
+    width: 450px;
+}
+
+
+.price-span {
+    display: flex;
+}
+
+
+.submit-spot-button {
+    margin: 10px;
+}

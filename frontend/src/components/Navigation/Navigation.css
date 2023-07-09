@@ -5,7 +5,6 @@
 }
 
 .profile-dropdown {
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,6 +14,8 @@
     margin: 2px;
     padding: 10px;
     gap: 4px;
+    background-color: antiquewhite;
+    z-index: 7;
 }
 
 .hidden {
@@ -44,6 +45,7 @@
 }
 
 .log-out-button {
+    cursor: pointer;
     margin-top: 3px;
     padding: 5px;
     width: 70px;
@@ -79,6 +81,7 @@
     gap: 10px;
     border-radius: 50px;
     cursor: pointer;
+
 }
 
 #user-menu-logo {
@@ -99,4 +102,8 @@
 
 .create-a-new-spot-button:hover {
     background-color: rgba(211, 211, 211, 0.899);
+}
+
+.modal-preset {
+    cursor: pointer;
 }

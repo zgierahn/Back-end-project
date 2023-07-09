@@ -51,7 +51,7 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <div>Hello {user.firstName}</div>
+            <div>Hello, {user.firstName}</div>
             <div>{user.email}</div>
             <div className="Manage-spots-div">
               <button className="manage-spots-button" onClick={()=>{history.push('/spots/current')}}>Manage Spots</button>
@@ -61,7 +61,7 @@ function ProfileButton({ user }) {
             </div>
           </>
         ) : (
-          <>
+          <div>
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
@@ -72,7 +72,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
       </ul>
     </nav>
