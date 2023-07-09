@@ -73,9 +73,9 @@ return (
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-          />
+            />
+            {errors.address && <div className="errors">{errors.address}</div>}
         </label>
-        {errors.address && <div className="errors">{errors.address}</div>}
         <span className='city-state-span'>
           <label>
             City:
@@ -86,8 +86,8 @@ return (
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
-          </label>
           {errors.city && <div className="errors">{errors.city}</div>}
+          </label>
           <p className='the-comma'>,</p>
           <label>
             State:
@@ -98,8 +98,8 @@ return (
               value={state}
               onChange={(e) => setState(e.target.value)}
             />
+            {errors.state && <div className="errors">{errors.state}</div>}
           </label>
-          {errors.state && <div className="errors">{errors.state}</div>}
         </span>
         <label>
           <h3>Describe your place to guests</h3>
