@@ -21,7 +21,7 @@ function Navigation({ isLoaded }){
         </div>
         {isLoaded && (
           <span className='header-right-side'>
-            <button className="create-a-new-spot-button" onClick={()=>{history.push('/spots/new')}}>Create a new Spot</button>
+            {sessionUser && <button className="create-a-new-spot-button" onClick={()=>{history.push('/spots/new')}}>Create a new Spot</button>}
           <div className='profile-button'>
             <ProfileButton user={sessionUser} />
           </div>
