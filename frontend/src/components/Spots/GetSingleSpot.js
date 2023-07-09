@@ -5,6 +5,7 @@ import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
 import { thunkDeleteReview, thunkGetReviewsBySpot } from '../../store/reviewsReducer';
 import ReviewModal from '../Modal/ReviewModal';
+import './GetSingleSpot.css';
 
 //works
 export default function GetSingleSpot() {
@@ -24,21 +25,45 @@ const reviewsObj = useSelector(state=>state.reviews.spot);
 
 
 const reviewsArray = Object.values(reviewsObj);
-console.log('reviews array', reviewsObj);
+console.log('spots object', spotsObj);
 
 if(!Object.values(spotsObj).length) { return null }
-// !Object.values(reviewsObj).length
 
 let imgArray = Object.values(spotsObj.SpotImages);
-let url = imgArray[0].url;
+console.log('what does this look like', imgArray);
+
 
 
     return (
         <div>
         <div>
             <h1>{spotsObj.name}</h1>
-            <span><p>{spotsObj.city}, {spotsObj.state}, {spotsObj.country}</p></span>
-            <img className= 'previewImage' src={url ? url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+            <span><h3>{spotsObj.city}, {spotsObj.state}, {spotsObj.country}</h3></span>
+            <div className='spot-details-images-container'>
+                <img className= 'spot-details-previewImage' src={imgArray[0].url ? imgArray[0].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                <span className='spot-details-small-pic-container'>
+                    <img className= 'spot-details-small-images' src={imgArray[1] ? imgArray[1].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                    <img className= 'spot-details-small-images' src={imgArray[2] ? imgArray[2].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                    <img className= 'spot-details-small-images' src={imgArray[3] ? imgArray[3].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                    <img className= 'spot-details-small-images' src={imgArray[4] ? imgArray[4].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                </span>
+            </div>
+            <div className='spot-detail-information-container'>
+                <span className='hosting-container'>
+                    <h1>Hosted by: {spotsObj.Owner.firstName}, {spotsObj.Owner.lastName}</h1>
+                    <p>{spotsObj.description}</p>
+                </span>
+                <div className='reserve-container'>
+                    <div className='price-rating-container'>
+                        <p>${spotsObj.price} night</p>
+                        <div>
+                            <i className="fa fa-star"></i>
+                            {spotsObj.avgRating ? spotsObj.avgRating.toFixed(1) : 'New'}
+                        </div>
+                    </div>
+                    <button>Reserve</button>
+                </div>
+            </div>
             <ReviewModal />
         </div>
         {reviewsArray.map(review=>{
