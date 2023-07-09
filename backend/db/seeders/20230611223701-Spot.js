@@ -20,7 +20,7 @@ module.exports = {
         lng: 90,
         name: 'The grey cabin',
         description: 'Awesome place to chill year round',
-        price: 10000
+        price: 5000
       },
       {
         ownerId: 1,
@@ -32,7 +32,7 @@ module.exports = {
         lng: 90.1,
         name: 'The brown cabin',
         description: 'Another amazing place year round',
-        price: 750
+        price: 2500
       },
       {
         ownerId: 1,
@@ -57,6 +57,66 @@ module.exports = {
         name: 'Small house in the mountains',
         description: 'Another great place to visit year round',
         price: 500
+      },
+      {
+        ownerId: 2,
+        address: '258 Street',
+        city: 'Telluride',
+        state: 'Colorado',
+        country: 'USA',
+        lat: 60,
+        lng: 120,
+        name: 'resort cabin',
+        description: 'Another great place to visit in Colorado',
+        price: 750
+      },
+      {
+        ownerId: 2,
+        address: '369 Street',
+        city: 'Denver',
+        state: 'Colorado',
+        country: 'USA',
+        lat: 60,
+        lng: 120,
+        name: 'Small house in the mountains',
+        description: 'Another great place to visit year round',
+        price: 600
+      },
+      {
+        ownerId: 3,
+        address: '123 Avenue',
+        city: 'Revelstoke',
+        state: 'British Columbia',
+        country: 'Canada',
+        lat: 60,
+        lng: 120,
+        name: 'Small house in the mountains',
+        description: 'Another great place to visit year round',
+        price: 800
+      },
+      {
+        ownerId: 3,
+        address: '456 Avenue',
+        city: 'Revelstoke',
+        state: 'British Columbia',
+        country: 'Canada',
+        lat: 60,
+        lng: 120,
+        name: 'Small house in the mountains',
+        description: 'Another great place to visit year round',
+        price: 750
+      },
+      {
+        ownerId: 3,
+        address: '789 Avenue',
+        city: 'Revelstoke',
+        state: 'British Columbia',
+        country: 'Canada',
+        lat: 60,
+        lng: 120,
+        name: 'Small house in the mountains',
+        description: 'Another great place to visit year round',
+        price: 950
       }
     ], {});
   },
