@@ -39,8 +39,14 @@
     flex-direction: column;
     border: 2px solid black;
     border-radius: 10px;
-    width: 300px;
+    width: 325px;
     height: 100px;
+}
+
+.mini-reviews-showing-span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .price-rating-container {
@@ -73,4 +79,10 @@
 .thisperiod {
     position: relative;
     bottom: 4px;
+}
+
+.thisminiperiod {
+    position: relative;
+    bottom: 4px;
+    margin: 5px;
 }

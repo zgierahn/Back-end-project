@@ -23,16 +23,19 @@ useEffect(() => {
 
 const spotsObj = useSelector(state => state.spots.singleSpot);
 const reviewsObj = useSelector(state=>state.reviews.spot);
+const userObj = useSelector(state=>state.session.user)
+console.log('this is spotsObj', spotsObj);
+console.log('this is user object', userObj);
 
 
 const reviewsArray = Object.values(reviewsObj);
-console.log('reviws array', reviewsArray);
-console.log('test test', reviewsArray[0].createdAt.split('-'));
+let newestReviewsFirst = reviewsArray.reverse();
+console.log('reviews array', reviewsArray);
 
 if(!Object.values(spotsObj).length) { return null }
 
+
 let imgArray = Object.values(spotsObj.SpotImages);
-console.log('what does this look like', imgArray);
 
 
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -59,9 +62,11 @@ const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oc
                 <div className='reserve-container'>
                     <div className='price-rating-container'>
                         <p>${spotsObj.price} night</p>
-                        <div>
+                        <div className='mini-reviews-showing-span'>
                             <i className="fa fa-star"></i>
                             {spotsObj.avgRating ? spotsObj.avgRating.toFixed(1) : 'New'}
+                            {!!newestReviewsFirst.length && <p className='thisminiperiod'>.</p>}
+                            {newestReviewsFirst.length >= 1 && <p>{newestReviewsFirst.length} {newestReviewsFirst.length === 1 ? "Review" : "Reviews"}</p>}
                         </div>
                     </div>
                     <button className="single-spot-reserve-button" onClick={()=>{alert("Feature Coming Soon")}}>Reserve</button>
@@ -75,11 +80,14 @@ const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oc
                 <i className="fa fa-star"></i>
                 {spotsObj.avgRating ? spotsObj.avgRating.toFixed(1) : 'New'}
             </h3>
-            {!!reviewsArray.length && <h3 className='thisperiod'>.</h3>}
-            {reviewsArray.length >= 1 && <h3>{reviewsArray.length} {reviewsArray.length === 1 ? "Review" : "Reviews"}</h3>}
+            {!!newestReviewsFirst.length && <h3 className='thisperiod'>.</h3>}
+            {newestReviewsFirst.length >= 1 && <h3>{newestReviewsFirst.length} {newestReviewsFirst.length === 1 ? "Review" : "Reviews"}</h3>}
             </span>
-            <ReviewModal />
-            {reviewsArray.map(review=>{
+
+            {userObj !== null && userObj.id !== spotsObj.ownerId && ((reviewsArray.every((review)=>{return review.userId !== userObj.id}))) && <ReviewModal />}
+
+            {!!!reviewsArray.length && !!userObj && userObj.id !== spotsObj.ownerId && <p>"Be the first to post a review!"</p>}
+            {newestReviewsFirst.map(review=>{
                 return (<div key={review.id} className='reviews-container'>
                     <p>{review.User.firstName !== undefined ? review.User.firstName : ''}</p>
                     <p>{month[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>

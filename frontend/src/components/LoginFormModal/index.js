@@ -25,7 +25,6 @@ function LoginFormModal() {
   };
 
 
-
   return (
     <div className="login-main-container">
       <h1>Log In</h1>

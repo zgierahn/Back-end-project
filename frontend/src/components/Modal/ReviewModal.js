@@ -17,6 +17,8 @@ const [activeRating, setActiveRating] = useState(stars);
 
 
 const toggleReviewButton = () => {
+    setStars(0);
+    setReview('');
     setModal(!modal)
 }
 
@@ -36,7 +38,7 @@ const sessionUser = useSelector(state=>state.session.user);
 
 
 const submitReview = async () => {
-    let reviewSubmission = { review, stars }
+      let reviewSubmission = { review, stars }
       const response = await dispatch(thunkCreateReview(reviewSubmission, sessionUser, spotId));
     if(response.id) {
         setStars(0);
@@ -48,10 +50,8 @@ const submitReview = async () => {
   return (
         <div>
 
-            <button className='review-button'
-            onClick={()=>{toggleReviewButton()}}
-            >Post Your Review</button>
-
+            <button className='review-button' onClick={()=>{toggleReviewButton()}}>
+                Post Your Review</button>
         {modal && (
             <div className='review-modal'>
             <div className='overlay'></div>
@@ -61,10 +61,11 @@ const submitReview = async () => {
                     Description:
                 </label>
                 <textarea
+                placeholder='Leave your review here...'
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
                 />
-                {errors.review && <div className="errors">{errors.review}</div>}
+                {/* {errors.review && <div className="errors">{errors.review}</div>} */}
                 <div className="star-rating">
                     <div
                         className={activeRating >= 1 ? "filled" : "empty"}
@@ -106,13 +107,15 @@ const submitReview = async () => {
                     >
                         <i className="fa fa-star"></i>
                     </div>
+                <div>Stars</div>
 
                 </div>
-                {errors.stars && <div className="errors">{errors.stars}</div>}
+                {/* {errors.stars && <div className="errors">{errors.stars}</div>} */}
                 <button
+                    disabled={Object.values(errors).length}
                     className='submit-review-button'
                     onClick={()=>{submitReview()}}
-                    >Submit Review</button>
+                    >Submit Your Review</button>
                 <button onClick={()=>{toggleReviewButton()}} className='close-review-modal'>Cancel</button>
             </div>
 
