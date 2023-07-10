@@ -158,7 +158,7 @@ export const thunkEditSpot = (data, spotId) => async (dispatch) => {
 
         if(res.ok) {
         const editedSpot = await res.json();
-            dispatch(actionCreateSpot(editedSpot));
+            dispatch(actionEditSpot(editedSpot));
             return editedSpot;
         }
     } catch (error) {
@@ -193,7 +193,8 @@ export default function SpotsReducer (state = intitialState, action) {
             return {...state, singleSpot: { [action.spot.id] : action.spot}} //singleSpot should only be set to the spot object, not the ID => action.spot
         };
         case EDIT_EXISTING_SPOT : {
-            return {...state, singleSpot: { [action.spot.id] : action.spot}}
+            console.log('this is the action', action.spot);
+            return {...state, singleSpot : action.spot }
         };
         case DELETE_SPOT : {
             const  newState = {...state, allSpots: {...state.allSpots}}

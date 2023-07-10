@@ -145,7 +145,13 @@ res.json(spotObj);
 
 //EDIT an existing spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
-  let spot = await Spot.findByPk(req.params.spotId);
+  let spot = await Spot.findByPk(req.params.spotId, {
+    include: [{model:SpotImage,
+      attributes: ['id', 'url', 'preview']},
+      {model:Review},
+      {model:User, as: 'Owner',
+      attributes:['id', 'firstName', 'lastName']}]
+  });
   if(!spot || spot.ownerId !== req.user.dataValues.id) {
     res.statusCode = 404;
     return res.json({message: "Spot couldn't be found"});

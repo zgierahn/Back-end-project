@@ -24,10 +24,7 @@ useEffect(() => {
 const spotsObj = useSelector(state => state.spots.singleSpot);
 const reviewsObj = useSelector(state=>state.reviews.spot);
 const userObj = useSelector(state=>state.session.user)
-console.log('this is spotsObj', spotsObj);
-console.log('this is user object', userObj);
-console.log('this is review object', reviewsObj);
-
+console.log('what is in SpotsObject', spotsObj);
 
 const reviewsArray = Object.values(reviewsObj);
 let newestReviewsFirst = reviewsArray.reverse();
@@ -36,7 +33,10 @@ console.log('reviews array', reviewsArray);
 if(!Object.values(spotsObj).length) { return null }
 
 
-let imgArray = Object.values(spotsObj.SpotImages);
+let imgArray = []
+if(spotsObj.SpotImages) {
+    imgArray = Object.values(spotsObj.SpotImages);
+}
 
 
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -47,7 +47,7 @@ const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oc
             <h1>{spotsObj.name}</h1>
             <span><h3>{spotsObj.city}, {spotsObj.state}, {spotsObj.country}</h3></span>
             <div className='spot-details-images-container'>
-                <img className= 'spot-details-previewImage' src={imgArray[0].url ? imgArray[0].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
+                <img className= 'spot-details-previewImage' src={imgArray[0] ? imgArray[0].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
                 <span className='spot-details-small-pic-container'>
                     <img className= 'spot-details-small-images' src={imgArray[1] ? imgArray[1].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
                     <img className= 'spot-details-small-images' src={imgArray[2] ? imgArray[2].url : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>

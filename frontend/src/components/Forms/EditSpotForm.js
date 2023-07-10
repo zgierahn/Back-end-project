@@ -1,16 +1,17 @@
-import SpotForm from './SpotForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { thunkEditSpot } from '../../store/spotsReducer';
 
 
-//works
+
 function EditSpotForm({spotObj}) {
+
+  const history = useHistory();
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  console.log('this is spotObj', spotObj);
-  // const [errors, setErrors] = useState({});
+
+  const [errors, setErrors] = useState({});
   const [address, setAddress] = useState(spotObj.address);
   const [city, setCity] = useState(spotObj.city);
   const [state, setState] = useState(spotObj.state);
@@ -18,8 +19,6 @@ function EditSpotForm({spotObj}) {
   const [name, setName] = useState(spotObj.name);
   const [description, setDescription] = useState(spotObj.description);
   const [price, setPrice] = useState(spotObj.price);
-  const [lat, setLat] = useState(90);
-  const [lng, setLng] = useState(90);
 
 
 if(!spotId || !Object.values(spotObj).length) return null
@@ -29,79 +28,135 @@ if(!spotId || !Object.values(spotObj).length) return null
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  let spot = { address, city, state, country, name, description, price, lat, lng}
-  const updateSpot =  await dispatch(thunkEditSpot( spot, spotId ));
-  console.log('this the new spot', updateSpot);
+  let trackErrors = {};
+  setErrors({});
+  if(!address) {trackErrors.address = "Must have a valid address"}
+  if(!city) {trackErrors.city = "Must have a valid city"}
+  if(!state) {trackErrors.state = "Must have a valid state"}
+  if(!country) {trackErrors.country = "Must have a valid country"}
+  if(!name) {trackErrors.name = "Must have a valid name"}
+  if(description.length < 30) {trackErrors.description = "Description needs 30 or more characters"}
+  if(price < 1) {trackErrors.price = "Price per night is required"}
+  setErrors(trackErrors);
+  if(Object.values(errors).length) return null;
+  else {
+    let spot = {...spotObj, address, city, state, country, name, description, price, lat: 90, lng: 90}
+    const updateSpot =  await dispatch(thunkEditSpot( spot, spotId ));
+    console.log('this the new spot', updateSpot);
+    if(updateSpot.id){
+      history.push(`/spots/${updateSpot.id}`)
+    }
+  }
 };
 
   return (
-    <form>
-      <h2>Edit Form</h2>
+    <div className='main-spot-form-container'>
+    <form className='inner-spot-form-container'>
+        <h1 className='h2-spot-form'>Update your Spot</h1>
         <label>
-        Address:
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </label>
-      {/* {errors.address && <div className="errors">{errors.address}</div>} */}
-      <label>
-        City:
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-      </label>
-      {/* {errors.city && <div className="errors">{errors.city}</div>} */}
-      <label>
-        State:
-        <input
-          type="text"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />
-      </label>
-      {/* {errors.state && <div className="errors">{errors.state}</div>} */}
-      <label>
-        Country:
-        <input
-          type="text"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
-      </label>
-      {/* {errors.country && <div className="errors">{errors.country}</div>} */}
-      <label>
-        Name:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
-      {/* {errors.name && <div className="errors">{errors.name}</div>} */}
-      <label>
-        Description:
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </label>
-      {/* {errors.description && <div className="errors">{errors.description}</div>} */}
-      <label>
-        Price:
-        <input
-          type="text"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-      </label>
-      {/* {errors.price && <div className="errors">{errors.price}</div>} */}
+        <h3>Where's your place located?</h3>
+        <p>Guests will only get your exact address once they booked a
+            reservation.
+        </p>
+          Country:
+            <input
+              className='create-spot-input'
+              placeholder='Country'
+              type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            />
+          </label>
+          {errors.country && <div className="errors">{errors.country}</div>}
+          <label>
+          Street Address:
+          <input
+            className='create-spot-input'
+            placeholder='Street Address'
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            />
+            {errors.address && <div className="errors">{errors.address}</div>}
+        </label>
+        <span className='city-state-span'>
+          <label>
+            City:
+            <input
+              className='create-city-input'
+              placeholder='City'
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          {errors.city && <div className="errors">{errors.city}</div>}
+          </label>
+          <p className='the-comma'>,</p>
+          <label>
+            State:
+            <input
+              className='create-state-input'
+              placeholder='State'
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
+            {errors.state && <div className="errors">{errors.state}</div>}
+          </label>
+        </span>
+        {/* <hr></hr> */}
+        <label>
+          <h3>Describe your place to guests</h3>
+          <p>
+            Mention the best features of your space, any special amentities like
+            fast wif or parking, and what you love about the neighborhood.
+          </p>
+          <textarea
+            className='create-spot-description-box'
+            placeholder='Please write at least 30 characters'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+        {errors.description && <div className="errors">{errors.description}</div>}
+        <label>
+          <h3>Create a title for your spot</h3>
+          <p>
+            Catch guests' attention with a spot title that highlights what makes
+            your place special.
+          </p>
+          <input
+            className='create-spot-input'
+            placeholder='Name of your Spot'
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        {errors.name && <div className="errors">{errors.name}</div>}
+        <label>
+          <h3>Set a base price for your Spot</h3>
+          <p>
+            Competitive pricing can help your listing stand out and rank higher
+            in search results.
+          </p>
+          <span className='price-span'>
+            <p>$</p>
+            <input
+              className='create-spot-input'
+              placeholder='Price per night (USD)'
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              />
+            </span>
+        {errors.price && <div className="errors">{errors.price}</div>}
+        </label>
 
-      <button type="submit" onClick={handleSubmit}>Show me the money!</button>
+
+      <button type="submit" onClick={handleSubmit}>Update Your Spot</button>
     </form>
+    </div>
   )
 };
 
