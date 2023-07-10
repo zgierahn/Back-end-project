@@ -1,11 +1,11 @@
-// import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkGetSingleSpot } from '../../store/spotsReducer';
 import { useParams } from 'react-router-dom';
 import { thunkDeleteReview, thunkGetReviewsBySpot } from '../../store/reviewsReducer';
 import ReviewModal from '../Modal/ReviewModal';
-import ReserveModal from '../Modal/ReserveModal';
+import DeleteModalButton from '../Modal/DifDeleteModal';
+import DeleteReviewModal from '../Modal/DeleteReviewModal';
 import './GetSingleSpot.css';
 
 //works
@@ -24,7 +24,7 @@ useEffect(() => {
 const spotsObj = useSelector(state => state.spots.singleSpot);
 const reviewsObj = useSelector(state=>state.reviews.spot);
 const userObj = useSelector(state=>state.session.user)
-console.log('what is in SpotsObject', spotsObj);
+console.log('what is user object', userObj);
 
 const reviewsArray = Object.values(reviewsObj);
 let newestReviewsFirst = reviewsArray.reverse();
@@ -93,10 +93,13 @@ const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oc
                     <p>{review.User.firstName !== undefined ? review.User.firstName : ''}</p>
                     <p>{month[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
                     <p>{review.review !== undefined ? review.review : ''}</p>
-                    <button
-                    onClick={()=>{dispatch(thunkDeleteReview(review.id))}}
-                    >Delete Review</button>
-                    <button>Add Review Image</button>
+                    {userObj && review.userId === userObj.id &&
+                    //     <button
+                    //     onClick={()=>{dispatch(thunkDeleteReview(review.id))}}
+                    //     >Delete Review</button>
+                    // &&
+                    <DeleteModalButton modalComponent={<DeleteReviewModal review={review}/>} buttonText={"Delete Review"}/>
+                    }
                 </div>
             )})}
             </div>

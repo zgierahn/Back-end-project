@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
+import { thunkDeleteReview } from "../../store/reviewsReducer";
 import './ReviewModal.css'
-import { thunkDeleteSpot } from "../../store/spotsReducer"
 import './DeleteModal.css'
 
-function DeleteModal({spot}) {
+function DeleteReviewModal({review}) {
+    console.log('areyou here?', review);
 const dispatch = useDispatch();
 
 const { closeModal } = useModal();
 
-//Delete Spot Modal
+//Delete Review Modal
 return (
         <div>
 
@@ -21,15 +22,13 @@ return (
                 <div className='overlay'></div>
                 <div className='review-content'>
                     <h1>Confirm Delete</h1>
-                    <p>Are you sure you want to remove this spot from the listings?</p>
-                    <button className='confirm-delete-button' key={spot.id}
-                        onClick={(e)=>{e.preventDefault();
-                        dispatch(thunkDeleteSpot(spot.id))
+                    <p>Are you sure you want to delete this review?</p>
+                    <button className='confirm-delete-button' key={review.id}
+                        onClick={()=>{dispatch(thunkDeleteReview(review.id))
                         .then(closeModal())}}>
-                            Yes (Delete Spot)
+                            Yes (Delete Review)
                     </button>
-                    <button onClick={()=>{closeModal()}} className='close-delete-modal'>No (Keep Spot)</button>
-
+                    <button onClick={()=>{closeModal()}} className='close-delete-modal'>No (Keep Review)</button>
                 </div>
             </div>
 
@@ -41,4 +40,4 @@ return (
   )
 };
 
-export default DeleteModal;
+export default DeleteReviewModal;
