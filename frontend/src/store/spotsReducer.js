@@ -193,7 +193,6 @@ export default function SpotsReducer (state = intitialState, action) {
             return {...state, singleSpot: { [action.spot.id] : action.spot}} //singleSpot should only be set to the spot object, not the ID => action.spot
         };
         case EDIT_EXISTING_SPOT : {
-            console.log('this is the action', action.spot);
             return {...state, singleSpot : action.spot }
         };
         case DELETE_SPOT : {

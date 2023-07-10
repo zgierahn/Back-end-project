@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { thunkDeleteSpot, thunkGetUserSpots } from '../../store/spotsReducer';
 import { useHistory } from 'react-router-dom';
+import DeleteModalButton from '../Modal/DifDeleteModal';
+import DeleteModal from '../Modal/DeleteModal';
 
 
 function SpotsByOwner() {
@@ -41,9 +43,7 @@ function SpotsByOwner() {
             <div>
               </div>
               </div>
-            <button key={spot.id} onClick={(e)=>{e.preventDefault();
-                return dispatch(thunkDeleteSpot(spot.id))
-              }}>Delete</button>
+              <DeleteModalButton modalComponent={<DeleteModal spot={spot}/>} buttonText={"Delete"}/>
             <button onClick={(e)=>history.push(`/spots/${spot.id}/edit`)}>Update</button>
 
 
