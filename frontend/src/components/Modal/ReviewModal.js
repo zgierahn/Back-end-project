@@ -45,7 +45,7 @@ const submitReview = async () => {
         setReview('');
        return toggleReviewButton()
     }
-    }
+}
 
   return (
         <div>

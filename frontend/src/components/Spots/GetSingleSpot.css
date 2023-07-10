@@ -86,3 +86,15 @@
     bottom: 4px;
     margin: 5px;
 }
+
+
+.the-stupid-extra-button {
+    margin: 20px;
+    padding-inline: 10px;
+    padding-block: 5px;
+    font-weight: bold;
+    color: antiquewhite;
+    background-color: rgb(98, 202, 228);
+    border-color: black;
+    box-shadow: 5px 5px 5px black;
+}

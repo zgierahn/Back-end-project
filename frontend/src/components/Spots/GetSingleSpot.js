@@ -26,6 +26,7 @@ const reviewsObj = useSelector(state=>state.reviews.spot);
 const userObj = useSelector(state=>state.session.user)
 console.log('this is spotsObj', spotsObj);
 console.log('this is user object', userObj);
+console.log('this is review object', reviewsObj);
 
 
 const reviewsArray = Object.values(reviewsObj);

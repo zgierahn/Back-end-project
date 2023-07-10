@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { thunkGetSingleSpot } from "./spotsReducer";
 
 //types
 const GET_REVIEWS_BY_SPOT = 'reviews/GetReviewsBySpotId';
@@ -96,6 +97,7 @@ export const thunkCreateReview = (data, user, spotId) => async (dispatch) => {
         const review = await res.json();
             review.User = user
             dispatch(actionCreateReview(review));
+            dispatch(thunkGetSingleSpot(spotId)); //this is a weird add. lets hope it works
             return review;
         }
 

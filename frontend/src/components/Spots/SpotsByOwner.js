@@ -14,27 +14,44 @@ function SpotsByOwner() {
 
     const spotsObj = useSelector(state => state.spots.allSpots);
     const spotsArray = Object.values(spotsObj);
-  
+
 
   return (
     <div>
     <h1>Manage your Spots</h1>
+    <button className='the-stupid-extra-button' onClick={()=>{history.push('/spots/new')}}>Create a New Spot</button>
+    <div className='manage-spots-container'>
     {spotsArray.map(spot =>{
-         return (  <div>
+         return (
+          <div className='outer-card-container'>
+         <div key={spot.id}
+          className='card-container'
+          onClick={()=>{history.push(`/spots/${spot.id}`)}}
+          data-tooltip={spot.name}
+          >
             <img className= 'previewImage' src={spot.previewImage ? spot.previewImage : "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"} alt='no image'/>
-             <p>Spot id: {spot.id}</p>
-             <p>{spot.address}</p>
-             <p key={spot.city}>{spot.city}</p>
-             <p key={spot.state}>{spot.state}</p>
-             <p>Price: {spot.price}</p>
-         <button key={spot.id} onClick={(e)=>{
-                e.preventDefault();
+            <span className='location-rating-span'>
+                <p className='city-state'>{spot.city}, {spot.state}</p>
+                <p className='avg-rating-main'>
+                    <i className="fa fa-star"></i>
+                    {spot.avgRating ? spot.avgRating.toFixed(1) : 'New'}
+                </p>
+                <p>${spot.price} night</p>
+            </span>
+            <div>
+              </div>
+              </div>
+            <button key={spot.id} onClick={(e)=>{e.preventDefault();
                 return dispatch(thunkDeleteSpot(spot.id))
-            }}>Delete</button>
+              }}>Delete</button>
             <button onClick={(e)=>history.push(`/spots/${spot.id}/edit`)}>Update</button>
-         </div>)
+
+
+
+          </div>)
     })}
     </div>
+  </div>
   )
 }
 
